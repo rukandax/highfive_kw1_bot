@@ -25,7 +25,7 @@ function databaseInitialize() {
 function init() {
   const bot = new Telegraf(process.env.BOT_TOKEN);
 
-  bot.on('start', (ctx) => {
+  bot.start((ctx) => {
     return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
   });
   
