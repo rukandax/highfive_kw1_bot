@@ -64,9 +64,9 @@ function init() {
   
       if (textContent.includes('@') && textContent.length > 1 && pushToUser) {
         users.push(textContent);
-      } else if (poin <= 0 && !isNaN(parseInt(textContent))) {
+      } else if (poin === null && !isNaN(parseInt(textContent))) {
         pushToUser = false;
-        poin = textContent;
+        poin = parseInt(textContent);
       } else {
         pushToUser = false;
         message += textContent + ' ';
