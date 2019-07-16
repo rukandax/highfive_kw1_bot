@@ -99,11 +99,11 @@ function init() {
       type = 'Uwoww';
     }
 
-    if (poin > 50) {
+    if (poin > 200) {
       type = 'Wadaww';
     }
 
-    if (poin > 50) {
+    if (poin > 500) {
       type = 'Wadidaww';
     }
   
