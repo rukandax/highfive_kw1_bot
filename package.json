@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-prebuild": "npm install",
+    "heroku-postbuild": "npm start"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "lokijs": "^1.5.6",
+    "telegraf": "^3.30.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "author": "Rukanda Faridsi <hey@rukanda.xyz>",
+  "license": "MIT"
+}
