@@ -36,7 +36,7 @@ bot.on('new_chat_members', (ctx) => {
 });
 
 bot.command('highfive', (ctx) => {
-  if (ctx.message.from.username !== 'highfive_kw1_bot') {
+  if (ctx.message.from.username === 'highfive_kw1_bot') {
     return ctx.reply('Nice try.');
   }
 
