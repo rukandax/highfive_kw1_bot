@@ -113,7 +113,10 @@ function init() {
   
     const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
     return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        return ctx.reply('Nice try.');
+      });
   });
   
   bot.launch()
