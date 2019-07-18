@@ -50,6 +50,10 @@ function init() {
   });
   
   bot.command('highfive', (ctx) => {
+    if (ctx.message.from.username !== 'highfive_kw1_bot') {
+      return ctx.reply('Nice try.');
+    }
+
     let pushToUser = true;
     const users = [];
   
