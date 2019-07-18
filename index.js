@@ -23,12 +23,16 @@ bot.start((ctx) => {
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
 });
 
-bot.command('showchatid', (ctx) => {
-  if (ctx.message.from.username !== 'rukandax') {
-    return ctx.reply('Anda bukan admin.');
-  }
+bot.hears(/./gi, (ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
 
-  return ctx.reply(`chat_id = ${ctx.message.chat.id}`);
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
+  }
 });
 
 bot.command('highfive', (ctx) => {
@@ -95,8 +99,7 @@ bot.command('highfive', (ctx) => {
 
   const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
   return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
-    .catch((e) => {
-      console.log(e);
+    .catch(() => {
       return ctx.reply('Nice try.');
     });
 });
