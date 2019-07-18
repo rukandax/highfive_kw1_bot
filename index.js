@@ -1,10 +1,25 @@
 require('dotenv').config();
 
 const Telegraf = require('telegraf');
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+
+const adapter = new FileSync('db.json');
+const db = low(adapter);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start((ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
+  }
+
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
 });
 
