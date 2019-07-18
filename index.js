@@ -9,7 +9,7 @@ const db = low(adapter);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-bot.use((ctx, next) => {
+bot.start((ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
                 .value();
@@ -20,20 +20,36 @@ bot.use((ctx, next) => {
       .write();
   }
 
-  return next(ctx);
-})
-
-bot.start((ctx) => {
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
 });
 
 bot.on('new_chat_members', (ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.new_chat_members.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.new_chat_members.id, username: ctx.message.new_chat_members.username })
+      .write();
+  }
+
   return ctx;
 });
 
 bot.command('highfive', (ctx) => {
   if (ctx.message.from.username === 'highfive_kw1_bot') {
     return ctx.reply('Nice try.');
+  }
+
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
   }
 
   let pushToUser = true;
@@ -101,6 +117,16 @@ bot.command('highfive', (ctx) => {
 });
 
 bot.hears(/./gi, (ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
+  }
+
   return ctx;
 });
 
