@@ -124,6 +124,8 @@ bot.hears(/./gi, (ctx) => {
       .push({ id: ctx.message.from.id, username: ctx.message.from.username })
       .write();
   }
+
+  return;
 });
 
 bot.launch();
