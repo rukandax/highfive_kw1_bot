@@ -41,6 +41,10 @@ bot.command('myid', (ctx) => {
   return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`, { reply_to_message_id: ctx.message.message_id });
 });
 
+bot.command('help', (ctx) => {
+  return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
+});
+
 bot.command('highfive', (ctx) => {
   if (ctx.message.from.username === 'highfive_kw1_bot') {
     return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
