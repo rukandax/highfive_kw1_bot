@@ -37,6 +37,10 @@ bot.on('new_chat_members', (ctx) => {
   return ctx;
 });
 
+bot.command('myid', (ctx) => {
+  return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`);
+});
+
 bot.command('highfive', (ctx) => {
   if (ctx.message.from.username === 'highfive_kw1_bot') {
     return ctx.reply('Nice try.');
