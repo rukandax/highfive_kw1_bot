@@ -38,12 +38,12 @@ bot.on('new_chat_members', (ctx) => {
 });
 
 bot.command('myid', (ctx) => {
-  return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`);
+  return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`, { reply_to_message_id: ctx.message.message_id });
 });
 
 bot.command('highfive', (ctx) => {
   if (ctx.message.from.username === 'highfive_kw1_bot') {
-    return ctx.reply('Nice try.');
+    return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
   }
 
   const user = db.get('id')
@@ -80,7 +80,7 @@ bot.command('highfive', (ctx) => {
   }
 
   if (poin === null || message.length <= 0 || users.length <= 0) {
-    return ctx.reply('Format salah, gunakan format highfive seperti biasa tanpa kode kategori.');
+    return ctx.reply('Format salah, gunakan format highfive seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id });
   }
 
   let type = 'Nice';
@@ -116,7 +116,7 @@ bot.command('highfive', (ctx) => {
   const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
   return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
     .catch(() => {
-      return ctx.reply('Nice try.');
+      return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
     });
 });
 
