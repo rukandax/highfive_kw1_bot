@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const Telegraf = require('telegraf');
+const Schedule = require('node-schedule')
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
@@ -8,6 +9,15 @@ const adapter = new FileSync('db.json');
 const db = low(adapter);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
+Schedule.scheduleJob('countdown', '30 09 * * *', () => {
+  const ripDate = new Date('August 01, 2019 09:30:00')
+  const countdown = Math.round(Math.abs(Date.now() - ripDate) / 864e5)
+
+  if (Date.now() < ripDate) {
+    return bot.telegram.sendMessage(-1001113266099, `${countdown} hari menuju deadline Project N, semangat @haroen @jengririz @arradf @nifasakinah @mahendrar @TanMichaelRyan @andreasdwin @araishikeiwai @hobertho @samuelrharahap @icalrn @mgannisa @petrisiamn @ariestania @irsyadillahp @ardhityo @satrioin`);
+  }
+});
 
 bot.start((ctx) => {
   const user = db.get('id')
