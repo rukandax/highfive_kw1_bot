@@ -12,7 +12,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 Schedule.scheduleJob('countdown', '30 09 * * *', () => {
   const ripDate = new Date('July 29, 2019 09:30:00')
-  const countdown = Math.round(Math.abs(Date.now() - ripDate) / 864e5) * 60
+  const countdown = Math.round(Math.abs(Date.now() - ripDate) / 864e5) * 24
 
   if (Date.now() < ripDate) {
     return bot.telegram.sendMessage(-1001113266099, `${countdown} jam menuju deadline Project N, semangat @haroen @jengririz @arradf @nifasakinah @mahendrar @TanMichaelRyan @andreasdwin @araishikeiwai @hobertho @samuelrharahap @icalrn @mgannisa @petrisiamn @ariestania @irsyadillahp @ardhityo @satrioin`);
