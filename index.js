@@ -19,6 +19,34 @@ Schedule.scheduleJob('countdown', '30 09 * * *', () => {
   }
 });
 
+Schedule.scheduleJob('payday', '00 13 * * *', () => {
+  let dayBeforePayday = new Date();
+  const today = new Date();
+
+  const payday = new Date();
+  payday.setFullYear(today.getFullYear());
+  payday.setMonth(today.getMonth());
+  payday.setDate(27);
+  
+  if(payday.getDay() == 0) {
+    dayBeforePayday.setDate(payday.getDate() - 3);
+  }
+
+  if (payday.getDay() == 6) {
+    dayBeforePayday.setDate(payday.getDate() - 2);
+  }
+
+  if (
+    today.getFullYear() === dayBeforePayday.getFullYear()
+    &&
+    today.getMonth() === dayBeforePayday.getMonth()
+    &&
+    today.getDay() === dayBeforePayday.getDay()
+  ) {
+    return bot.telegram.sendMessage(-1001113266099, 'Besok gajian gaesss~~');
+  }
+});
+
 bot.start((ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
