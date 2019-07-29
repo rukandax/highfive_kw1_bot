@@ -163,7 +163,7 @@ bot.command('highfive', (ctx) => {
 
   if (applyFee) {
     ctx.reply('Per 30 Juli 2019, setiap highfive dengan nilai diatas 5000 dikenakan fee sebesar 2%.\n\n-- TTD Revenue Tribe --', { reply_to_message_id: ctx.message.message_id });
-    poin = poin - (poin / 200);
+    poin = poin - (poin * 2 / 100);
   }
 
   const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
