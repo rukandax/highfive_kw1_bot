@@ -158,6 +158,7 @@ bot.command('highfive', (ctx) => {
 
   if (poin > 10000) {
     type = 'Wadidaww';
+    applyFee = true;
   }
 
   if (applyFee) {
