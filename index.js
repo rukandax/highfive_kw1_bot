@@ -10,22 +10,11 @@ const db = low(adapter);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-Schedule.scheduleJob('countdown', '30 09 * * *', () => {
-  const ripDate = new Date('July 29, 2019 09:30:00')
-  const countdown = Math.round(Math.abs(Date.now() - ripDate) / 864e5) * 24
-
-  if (Date.now() < ripDate) {
-    return bot.telegram.sendMessage(-1001113266099, `${countdown} jam menuju deadline Project N, semangat @haroen @jengririz @arradf @nifasakinah @mahendrar @TanMichaelRyan @andreasdwin @araishikeiwai @hobertho @samuelrharahap @icalrn @mgannisa @petrisiamn @ariestania @irsyadillahp @ardhityo @satrioin`);
-  }
-});
-
 Schedule.scheduleJob('payday', '00 13 * * *', () => {
   let dayBeforePayday = new Date();
   const today = new Date();
 
   const payday = new Date();
-  payday.setFullYear(today.getFullYear());
-  payday.setMonth(today.getMonth());
   payday.setDate(27);
   
   if(payday.getDay() == 0) {
@@ -37,10 +26,6 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
   }
 
   if (
-    today.getFullYear() === dayBeforePayday.getFullYear()
-    &&
-    today.getMonth() === dayBeforePayday.getMonth()
-    &&
     today.getDay() === dayBeforePayday.getDay()
   ) {
     return bot.telegram.sendMessage(-1001113266099, 'Besok gajian gaesss~~');
@@ -71,15 +56,33 @@ bot.on('new_chat_members', (ctx) => {
       .push({ id: ctx.message.new_chat_members.id, username: ctx.message.new_chat_members.username })
       .write();
   }
-
-  return ctx;
 });
 
 bot.command('myid', (ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
+  }
+
   return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`, { reply_to_message_id: ctx.message.message_id });
 });
 
 bot.command('help', (ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
+  }
+
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
 });
 
@@ -101,6 +104,7 @@ bot.command('highfive', (ctx) => {
   let pushToUser = true;
   const users = [];
 
+  let applyFee = false;
   let poin = null;
   let message = '';
 
@@ -149,16 +153,26 @@ bot.command('highfive', (ctx) => {
 
   if (poin > 5000) {
     type = 'Wadaww';
+    applyFee = true;
   }
 
-  if (poin > 1000) {
+  if (poin > 10000) {
     type = 'Wadidaww';
   }
 
+  if (applyFee) {
+    ctx.reply('Per 30 Juli 2019, setiap highfive dengan nilai diatas 5000 dikenakan fee sebesar 2%.\n\n-- TTD Revenue Tribe --', { reply_to_message_id: ctx.message.message_id });
+    poin = poin - (poin / 200);
+  }
+
   const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
+
   return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
     .catch(() => {
       return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
+    })
+    .finally(() => {
+      applyFee = false;
     });
 });
 
@@ -172,8 +186,6 @@ bot.hears(/./gi, (ctx) => {
       .push({ id: ctx.message.from.id, username: ctx.message.from.username })
       .write();
   }
-
-  return ctx;
 });
 
 bot.launch();
