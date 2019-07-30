@@ -171,9 +171,6 @@ bot.command('highfive', (ctx) => {
   return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
     .catch(() => {
       return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
-    })
-    .finally(() => {
-      applyFee = false;
     });
 });
 
