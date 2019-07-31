@@ -90,10 +90,6 @@ bot.command('help', (ctx) => {
 });
 
 bot.command('highfive', (ctx) => {
-  if (ctx.message.from.username === 'highfive_kw1_bot') {
-    return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
-  }
-
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
                 .value();
