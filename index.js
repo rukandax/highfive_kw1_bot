@@ -214,7 +214,7 @@ bot.command('instagram', async (ctx) => {
       usersEl.each((_, el) => {
         const user = $(el).attr('href').replace('http://gramuser.com/user/', 'https://www.instagram.com/');
         
-        if (!users.includes(user)) {
+        if (!users.includes(user) && users.length < 10) {
           users.push(user);
         }
       });
