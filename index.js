@@ -61,7 +61,7 @@ bot.on('new_chat_members', (ctx) => {
   }
 });
 
-bot.on('photo', (ctx) => {
+bot.on('photo', async (ctx) => {
   if (ctx.message.from.username === 'seanmcbot') {
     const name = ctx.message.text.split('.')[0].trim();
 
