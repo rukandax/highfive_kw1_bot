@@ -61,6 +61,35 @@ bot.on('new_chat_members', (ctx) => {
   }
 });
 
+bot.on('photo', (ctx) => {
+  if (ctx.message.from.username === 'seanmcbot') {
+    const name = ctx.message.text.split('.')[0].trim();
+
+    const links = await axios.get(`https://api.social-searcher.com/v2/search?q=${name}&network=web&key=${process.env.SOCIAL_SEARCHER_KEY}`)
+      .then(({ data }) => {
+        const users = []
+        const { posts } = data;
+
+        for (post of posts) {
+          if (post.type === 'link' && post.user && post.user.name === 'www.instagram.com') {
+            if (!post.url.includes('/explore/')) {
+              users.push(post.url);
+            }
+          }
+        }
+
+        return users;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (links.length > 0) {
+      return ctx.reply(`Nemu nih ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id });  
+    }
+  }
+});
+
 bot.command('myid', (ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
@@ -208,7 +237,7 @@ bot.command('instagram', async (ctx) => {
   return ctx.reply('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id });  
 });
 
-bot.hears(/./gi, async (ctx) => {
+bot.hears(/./gi, (ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
                 .value();
@@ -217,33 +246,6 @@ bot.hears(/./gi, async (ctx) => {
     db.get('id')
       .push({ id: ctx.message.from.id, username: ctx.message.from.username })
       .write();
-  }
-
-  if (ctx.message.from.username === 'seanmcbot') {
-    const name = ctx.message.text.split('.')[0].trim();
-
-    const links = await axios.get(`https://api.social-searcher.com/v2/search?q=${name}&network=web&key=${process.env.SOCIAL_SEARCHER_KEY}`)
-      .then(({ data }) => {
-        const users = []
-        const { posts } = data;
-
-        for (post of posts) {
-          if (post.type === 'link' && post.user && post.user.name === 'www.instagram.com') {
-            if (!post.url.includes('/explore/')) {
-              users.push(post.url);
-            }
-          }
-        }
-
-        return users;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    if (links.length > 0) {
-      return ctx.reply(`Nemu nih ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id });  
-    }
   }
 });
 
