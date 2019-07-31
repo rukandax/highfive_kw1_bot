@@ -189,7 +189,9 @@ bot.command('instagram', async (ctx) => {
 
       for (post of posts) {
         if (post.type === 'link' && post.user && post.user.name === 'www.instagram.com') {
-          users.push(post.url);
+          if (!post.url.includes('/explore/')) {
+            users.push(post.url);
+          }
         }
       }
 
