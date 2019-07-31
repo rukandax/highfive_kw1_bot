@@ -177,7 +177,13 @@ bot.command('highfive', (ctx) => {
 bot.command('instagram', async (ctx) => {
   ctx.reply('Bentar dicari dulu', { reply_to_message_id: ctx.message.message_id });  
   
-  const name = ctx.message.text.replace('/instagram', '').trim();
+  let name = '';
+
+  if (ctx.message.text.includes('/instagram@highfive_kw1_bot')) {
+    name = ctx.message.text.replace('/instagram@highfive_kw1_bot', '').trim();
+  } else {
+    name = ctx.message.text.replace('/instagram', '').trim();
+  }
 
   // const links = await axios.get(`https://api.social-searcher.com/v2/search?q=${name}&network=web&key=${process.env.SOCIAL_SEARCHER_KEY}`)
   //   .then(({ data }) => {
