@@ -208,7 +208,7 @@ bot.command('instagram', async (ctx) => {
   return ctx.reply('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id });  
 });
 
-bot.hears(/./gi, (ctx) => {
+bot.hears(/./gi, async (ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
                 .value();
