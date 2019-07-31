@@ -6,6 +6,8 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const axios = require('axios');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 const adapter = new FileSync('db.json');
 const db = low(adapter);
 
@@ -176,8 +178,6 @@ bot.command('highfive', (ctx) => {
 });
 
 bot.command('instagram', async (ctx) => {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
   ctx.reply('Bentar dicari dulu', { reply_to_message_id: ctx.message.message_id });  
   
   const name = ctx.message.text.replace('/instagram', '').trim();
@@ -217,6 +217,33 @@ bot.hears(/./gi, (ctx) => {
     db.get('id')
       .push({ id: ctx.message.from.id, username: ctx.message.from.username })
       .write();
+  }
+
+  if (ctx.message.from.username === 'seanmcbot') {
+    const name = ctx.message.text.split('.')[0].trim();
+
+    const links = await axios.get(`https://api.social-searcher.com/v2/search?q=${name}&network=web&key=${process.env.SOCIAL_SEARCHER_KEY}`)
+      .then(({ data }) => {
+        const users = []
+        const { posts } = data;
+
+        for (post of posts) {
+          if (post.type === 'link' && post.user && post.user.name === 'www.instagram.com') {
+            if (!post.url.includes('/explore/')) {
+              users.push(post.url);
+            }
+          }
+        }
+
+        return users;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (links.length > 0) {
+      return ctx.reply(`Nemu nih ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id });  
+    }
   }
 });
 
