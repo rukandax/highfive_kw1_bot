@@ -177,6 +177,8 @@ bot.command('highfive', (ctx) => {
 
 bot.command('instagram', async (ctx) => {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+  ctx.reply('Bentar dicari dulu', { reply_to_message_id: ctx.message.message_id });  
   
   const name = ctx.message.text.replace('/instagram', '').trim();
 
@@ -198,10 +200,10 @@ bot.command('instagram', async (ctx) => {
     });
 
   if (links.length > 0) {
-    return ctx.reply(`Berhasil menemukan ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id });  
+    return ctx.reply(`Nemu nih ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id });  
   }
 
-  return ctx.reply('Akun tidak ditemukan', { reply_to_message_id: ctx.message.message_id });  
+  return ctx.reply('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id });  
 });
 
 bot.hears(/./gi, (ctx) => {
