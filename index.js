@@ -4,6 +4,7 @@ const Telegraf = require('telegraf');
 const Schedule = require('node-schedule')
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const axios = require('axios');
 
 const adapter = new FileSync('db.json');
 const db = low(adapter);
@@ -172,6 +173,35 @@ bot.command('highfive', (ctx) => {
     .catch(() => {
       return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
     });
+});
+
+bot.command('instagram', async (ctx) => {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  
+  const name = ctx.message.text.replace('/instagram', '').trim();
+
+  const links = await axios.get(`https://api.social-searcher.com/v2/search?q=${name}&network=web&key=${process.env.SOCIAL_SEARCHER_KEY}`)
+    .then(({ data }) => {
+      const users = []
+      const { posts } = data;
+
+      for (post of posts) {
+        if (post.type === 'link' && post.user && post.user.name === 'www.instagram.com') {
+          users.push(post.url);
+        }
+      }
+
+      return users;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  if (links.length > 0) {
+    return ctx.reply(`Berhasil menemukan ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id });  
+  }
+
+  return ctx.reply('Akun tidak ditemukan', { reply_to_message_id: ctx.message.message_id });  
 });
 
 bot.hears(/./gi, (ctx) => {
