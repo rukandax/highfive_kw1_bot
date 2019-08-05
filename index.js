@@ -228,18 +228,42 @@ bot.command('instagram', async (ctx) => {
       const usersEl = $('.timg');
 
       usersEl.each((_, el) => {
-        const user = $(el).attr('href').replace('http://gramuser.com/user/', 'https://www.instagram.com/');
-        
-        if (!users.includes(user) && users.length < 10) {
-          users.push(user);
-        }
+        const username = $(el).attr('href').replace('http://gramuser.com/user/', '');
+        const followers = $(el).html().match(/([0-9,]+) followers/)[1];
+
+        users.push({
+          username,
+          followers: parseInt(followers),
+        });
       });
 
       return users;
-    });
+    }).catch(() => {
+      return ctx.reply('Service Down', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err);
+      });
+    })
 
   if (links.length > 0) {
-    return ctx.reply(`Nemu nih ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    for (let u = 0;u < links.length; u += 1) {
+      for (let i = 0;i < links.length; i += 1) {
+        if (links[i + 1] && links[i].followers < links[i + 1].followers) {
+          const a = links[i];
+          links[i] = links[i + 1];
+          links[i + 1] = a;
+        }
+      }
+    }
+
+    let users = [];
+
+    for (let i = 0;i < links.length; i += 1) {
+      users.push(`https://www.instagram.com/${links[i].username}`);
+    }
+
+    users = users.slice(0, 20);
+
+    return ctx.reply(`Nemu nih ${users.length} akun\n\n${users.join("\n")}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
