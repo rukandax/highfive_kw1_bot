@@ -201,25 +201,6 @@ bot.command('instagram', async (ctx) => {
     name = ctx.message.text.replace('/instagram', '').trim();
   }
 
-  // const links = await axios.get(`https://api.social-searcher.com/v2/search?q=${name}&network=web&key=${process.env.SOCIAL_SEARCHER_KEY}`)
-  //   .then(({ data }) => {
-  //     const users = []
-  //     const { posts } = data;
-
-  //     for (post of posts) {
-  //       if (post.type === 'link' && post.user && post.user.name === 'www.instagram.com') {
-  //         if (!post.url.includes('/explore/')) {
-  //           users.push(post.url);
-  //         }
-  //       }
-  //     }
-
-  //     return users;
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-
   const links = await axios.get(`https://gramuser.com/search/${name}`)
     .then(({ data }) => {
       const users = [];
