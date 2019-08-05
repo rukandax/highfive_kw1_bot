@@ -23,16 +23,18 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
   
   if(payday.getDay() == 0) {
     dayBeforePayday.setDate(payday.getDate() - 3);
-  }
-
-  if (payday.getDay() == 6) {
+  } else if (payday.getDay() == 6) {
     dayBeforePayday.setDate(payday.getDate() - 2);
+  } else {
+    dayBeforePayday = null;
   }
 
   if (
     today.getDate() === dayBeforePayday.getDate()
   ) {
-    return bot.telegram.sendMessage(-1001113266099, 'Besok gajian gaesss~~');
+    return bot.telegram.sendMessage(-1001113266099, 'Besok gajian gaesss~~').catch((err) => {
+      console.log(err);
+    });
   }
 });
 
@@ -47,7 +49,9 @@ bot.start((ctx) => {
       .write();
   }
 
-  return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
+  return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
+    console.log(err);
+  });
 });
 
 bot.on('new_chat_members', (ctx) => {
@@ -73,7 +77,9 @@ bot.command('myid', (ctx) => {
       .write();
   }
 
-  return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`, { reply_to_message_id: ctx.message.message_id });
+  return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
 });
 
 bot.command('help', (ctx) => {
@@ -87,7 +93,9 @@ bot.command('help', (ctx) => {
       .write();
   }
 
-  return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.');
+  return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
+    console.log(err);
+  });
 });
 
 bot.command('highfive', (ctx) => {
@@ -126,7 +134,9 @@ bot.command('highfive', (ctx) => {
   }
 
   if (poin === null || message.length <= 0 || users.length <= 0) {
-    return ctx.reply('Format salah, gunakan format highfive seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id });
+    return ctx.reply('Format salah, gunakan format highfive seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
   }
 
   let type = 'Nice';
@@ -162,7 +172,9 @@ bot.command('highfive', (ctx) => {
   }
 
   if (applyFee) {
-    ctx.reply('Per 30 Juli 2019, setiap highfive dengan nilai diatas 5000 dikenakan fee sebesar 2%.\n\n-- TTD Revenue Tribe --', { reply_to_message_id: ctx.message.message_id });
+    ctx.reply('Per 30 Juli 2019, setiap highfive dengan nilai diatas 5000 dikenakan fee sebesar 2%.\n\n-- TTD Revenue Tribe --', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
     poin = poin - (poin * 2 / 100);
   }
 
@@ -170,12 +182,16 @@ bot.command('highfive', (ctx) => {
 
   return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
     .catch(() => {
-      return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id });
+      return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err);
+      });
     });
 });
 
 bot.command('instagram', async (ctx) => {
-  ctx.reply('Bentar dicari dulu', { reply_to_message_id: ctx.message.message_id });  
+  ctx.reply('Bentar dicari dulu', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
   
   let name = '';
 
@@ -223,10 +239,14 @@ bot.command('instagram', async (ctx) => {
     });
 
   if (links.length > 0) {
-    return ctx.reply(`Nemu nih ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id });  
+    return ctx.reply(`Nemu nih ${links.length} akun\n\n${links.join("\n")}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
   }
 
-  return ctx.reply('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id });  
+  return ctx.reply('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
 });
 
 bot.hears(/./gi, (ctx) => {
