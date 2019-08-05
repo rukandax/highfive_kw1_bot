@@ -229,7 +229,7 @@ bot.command('instagram', async (ctx) => {
 
       usersEl.each((_, el) => {
         const username = $(el).attr('href').replace('http://gramuser.com/user/', '');
-        const followers = $(el).html().match(/([0-9,]+) followers/)[1];
+        const followers = $(el).html().replace(/,/gi, '').match(/([0-9,]+) followers/)[1];
 
         users.push({
           username,
