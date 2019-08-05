@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node index.js",
+    "start": "./node_modules/forever/bin/forever start index.js",
+    "stop": "./node_modules/forever/bin/forever stop index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-prebuild": "npm install",
