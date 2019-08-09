@@ -241,8 +241,10 @@ const findInstagram = async (ctx, target = '') => {
     });
   }
 
-  ctx.reply(`Bentar dicari dulu ${name}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err);
+  ctx.replyWithHTML(`Bentar dicari dulu <b>${name}</b>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
   });
 
   const links = await axios.get(`https://gramuser.com/search/${name}`)
