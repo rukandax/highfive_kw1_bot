@@ -49,6 +49,10 @@ bot.start((ctx) => {
       .write();
   }
 
+  return ctx.reply('Kalau mau kirim highfive sekarang di @ibususi_bot .. Terimakasih atas kebersamaan kita selama ini :((', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
+
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
     console.log(err);
   });
@@ -93,6 +97,10 @@ bot.command('help', (ctx) => {
       .write();
   }
 
+  return ctx.reply('Kalau mau kirim highfive sekarang di @ibususi_bot .. Terimakasih atas kebersamaan kita selama ini :((', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
+
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
     console.log(err);
   });
@@ -108,6 +116,10 @@ bot.command('highfive', (ctx) => {
       .push({ id: ctx.message.from.id, username: ctx.message.from.username })
       .write();
   }
+
+  return ctx.reply('Kalau mau kirim highfive sekarang di @ibususi_bot .. Terimakasih atas kebersamaan kita selama ini :((', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
 
   let pushToUser = true;
   const users = [];
