@@ -204,8 +204,8 @@ bot.command('highfive', (ctx) => {
     });
 });
 
-bot.command('instagram', async (ctx) => {
-  let name = '';
+const findInstagram = async (ctx, target = '') => {
+  let name = target;
 
   if (ctx.message.text.includes('/instagram@highfive_kw1_bot')) {
     name = ctx.message.text.replace('/instagram@highfive_kw1_bot', '').trim();
@@ -217,23 +217,19 @@ bot.command('instagram', async (ctx) => {
     if (ctx.message.reply_to_message) {
       name = ctx.message.reply_to_message.from.first_name + ' ' + ctx.message.reply_to_message.from.last_name;
 
-      if (ctx.message.reply_to_message.from.is_bot && ctx.message.reply_to_message.from.username != 'seanmcbot') {
-        return ctx.reply('Untuk saat ini hanya dapat terintegrasi dengan bot @seanmcbot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      if (ctx.message.reply_to_message.from.is_bot) {
+        return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
-      } else if (ctx.message.reply_to_message.from.username === 'seanmcbot') {
-        name = ctx.message.reply_to_message.caption.split('.')[0].trim();
       }
     
       if (ctx.message.reply_to_message.forward_from) {
         name = ctx.message.reply_to_message.forward_from.first_name + ' ' + ctx.message.reply_to_message.forward_from.last_name;
 
-        if (ctx.message.reply_to_message.forward_from.is_bot && ctx.message.reply_to_message.forward_from.username != 'seanmcbot') {
-          return ctx.reply('Untuk saat ini hanya dapat terintegrasi dengan bot @seanmcbot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        if (ctx.message.reply_to_message.forward_from.is_bot) {
+          return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
             console.log(err);
           });
-        } else if (ctx.message.reply_to_message.forward_from.username === 'seanmcbot') {
-          name = ctx.message.reply_to_message.caption.split('.')[0].trim();
         }
       }
     }
@@ -300,11 +296,13 @@ bot.command('instagram', async (ctx) => {
   return ctx.reply('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
+};
+
+bot.command('instagram', (ctx) => {
+  findInstagram(ctx);
 });
 
 bot.hears(/./gi, (ctx) => {
-  console.log(ctx.message);
-
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
                 .value();
@@ -313,6 +311,10 @@ bot.hears(/./gi, (ctx) => {
     db.get('id')
       .push({ id: ctx.message.from.id, username: ctx.message.from.username })
       .write();
+  }
+
+  if (ctx.message.reply_to_message && ctx.message.reply_to_message.from.username === 'highfive_kw1_bot' && ctx.message.reply_to_message.text === 'Mau cari instagram siapa ?') {
+    findInstagram(ctx, ctx.message.text);
   }
 });
 
