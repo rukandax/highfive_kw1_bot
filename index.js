@@ -215,7 +215,11 @@ const findInstagram = async (ctx, target = '') => {
 
   if (name.length <= 0) {
     if (ctx.message.reply_to_message) {
-      name = ctx.message.reply_to_message.from.first_name + ' ' + ctx.message.reply_to_message.from.last_name;
+      name = ctx.message.reply_to_message.from.first_name;
+
+      if (ctx.message.reply_to_message.from.last_name) {
+        name += ` ${ctx.message.reply_to_message.from.last_name}`;
+      }
 
       if (ctx.message.reply_to_message.from.is_bot) {
         return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
