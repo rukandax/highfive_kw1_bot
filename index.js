@@ -30,6 +30,8 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
   }
 
   if (
+    dayBeforePayday
+    &&
     today.getDate() === dayBeforePayday.getDate()
   ) {
     bot.telegram.sendMessage(-1001113266099, 'Besok gajian gaesss~~').catch((err) => {
