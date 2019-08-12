@@ -195,7 +195,6 @@ bot.command('givepoint', (ctx) => {
       .write();
   }
 
-  let user = '';
   let message = '';
   let text = '';
 
@@ -221,7 +220,7 @@ bot.command('givepoint', (ctx) => {
     });
   }
 
-  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${user} udah ${message}. Aku sih bodo amat!`;
+  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${textArray[0]} udah ${message}. Aku sih bodo amat!`;
 
   ctx.reply(output, { chat_id: -1001113266099 })
     .catch((err) => {
