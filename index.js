@@ -53,10 +53,6 @@ bot.start((ctx) => {
       .write();
   }
 
-  return ctx.reply('Kalau mau kirim highfive sekarang di @ibususi_bot .. Terimakasih atas kebersamaan kita selama ini :((', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err);
-  });
-
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
     console.log(err);
   });
@@ -101,10 +97,6 @@ bot.command('help', (ctx) => {
       .write();
   }
 
-  return ctx.reply('Kalau mau kirim highfive sekarang di @ibususi_bot .. Terimakasih atas kebersamaan kita selama ini :((', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err);
-  });
-
   return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
     console.log(err);
   });
@@ -120,10 +112,6 @@ bot.command('highfive', (ctx) => {
       .push({ id: ctx.message.from.id, username: ctx.message.from.username })
       .write();
   }
-
-  return ctx.reply('Kalau mau kirim highfive sekarang di @ibususi_bot .. Terimakasih atas kebersamaan kita selama ini :((', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err);
-  });
 
   let pushToUser = true;
   const users = [];
@@ -191,7 +179,8 @@ bot.command('highfive', (ctx) => {
     ctx.reply('Per 30 Juli 2019, setiap highfive dengan nilai diatas 5000 dikenakan fee sebesar 2%.\n\n-- TTD Revenue Tribe --', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
-    poin = poin - (poin * 2 / 100);
+    
+    poin = parseInt(poin - (poin * 2 / 100));
   }
 
   const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
