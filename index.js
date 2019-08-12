@@ -220,14 +220,18 @@ bot.command('givepoint', (ctx) => {
     });
   }
 
-  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${textArray[0]} udah ${message}. Aku sih bodo amat!`;
+  const endTexts = [
+    'Aku sih bodo amat!',
+    'Aku gak sabar mau cerita ini waktu ngumpul sama temen-temen toxic aku nanti.',
+    'Salamin sama pacar-pacar mu juga ya.',
+    'Temen-temen pada nanyain tuh. Kapan bayar hutang ?',
+  ];
 
-  ctx.reply(output, { chat_id: -1001113266099 })
-    .catch((err) => {
-      console.log(err);
-    });
+  const endTextIndex = Math.random() * (endTexts.length - 0) + 0;
 
-  ctx.reply(output, { chat_id: -1001270555525 })
+  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${textArray[0]} udah ${message}. ${endTexts[endTextIndex]}`;
+
+  return ctx.reply(output, { chat_id: -1001113266099 })
     .catch((err) => {
       console.log(err);
     });
