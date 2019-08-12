@@ -53,9 +53,27 @@ bot.start((ctx) => {
       .write();
   }
 
-  return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
-    console.log(err);
-  });
+  return ctx.reply('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n1. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+bot.command('help', (ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
+  }
+
+  return ctx.reply('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n1. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 bot.on('new_chat_members', (ctx) => {
@@ -86,22 +104,6 @@ bot.command('myid', (ctx) => {
   });
 });
 
-bot.command('help', (ctx) => {
-  const user = db.get('id')
-                .find({ id: ctx.message.from.id })
-                .value();
-
-  if (!user) {
-    db.get('id')
-      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
-      .write();
-  }
-
-  return ctx.reply('Gunakan format highfive seperti biasa tanpa kode kategori.').catch((err) => {
-    console.log(err);
-  });
-});
-
 bot.command('highfive', (ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
@@ -116,7 +118,6 @@ bot.command('highfive', (ctx) => {
   let pushToUser = true;
   const users = [];
 
-  let applyFee = false;
   let poin = null;
   let message = '';
 
@@ -180,6 +181,56 @@ bot.command('highfive', (ctx) => {
       return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
         console.log(err);
       });
+    });
+});
+
+bot.command('givepoint', (ctx) => {
+  const user = db.get('id')
+                .find({ id: ctx.message.from.id })
+                .value();
+
+  if (!user) {
+    db.get('id')
+      .push({ id: ctx.message.from.id, username: ctx.message.from.username })
+      .write();
+  }
+
+  let user = '';
+  let message = '';
+  let text = '';
+
+  if (ctx.message.text.includes('/givepoint@highfive_kw1_bot')) {
+    text = ctx.message.text.replace('/givepoint@highfive_kw1_bot', '').trim();
+  } else {
+    text = ctx.message.text.replace('/givepoint', '').trim();
+  }
+
+  let textArray = text.split(' ');
+
+  if (!textArray[0].includes('@')) {
+    return ctx.reply('Format salah, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  message = textArray.slice(1).join(' ');
+
+  if (!message.length < 2) {
+    return ctx.reply('Format salah, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${user} udah ${message}. Aku sih bodo amat!`;
+
+  ctx.reply(output, { chat_id: -1001113266099 })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  ctx.reply(output, { chat_id: -1001270555525 })
+    .catch((err) => {
+      console.log(err);
     });
 });
 
