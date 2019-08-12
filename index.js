@@ -227,7 +227,7 @@ bot.command('givepoint', (ctx) => {
     'Temen-temen pada nanyain tuh. Kapan bayar hutang ?',
   ];
 
-  const endTextsIndex = parseInt(Math.random() * 3);
+  const endTextsIndex = parseInt(Math.random() * endTexts.length);
 
   const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}`;
 
