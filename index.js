@@ -214,7 +214,7 @@ bot.command('givepoint', (ctx) => {
 
   message = textArray.slice(1).join(' ');
 
-  if (!message.length < 2) {
+  if (message.length < 2) {
     return ctx.reply('Format salah, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
