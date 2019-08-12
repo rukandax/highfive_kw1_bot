@@ -207,7 +207,7 @@ bot.command('givepoint', (ctx) => {
   let textArray = text.split(' ');
 
   if (!textArray[0].includes('@')) {
-    return ctx.reply('Format salah, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.reply('User tidak ditemukan, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -215,7 +215,7 @@ bot.command('givepoint', (ctx) => {
   message = textArray.slice(1).join(' ');
 
   if (message.length < 2) {
-    return ctx.reply('Format salah, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.reply('Pesan tidak boleh kosong, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
