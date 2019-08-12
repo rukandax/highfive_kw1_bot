@@ -53,7 +53,7 @@ bot.start((ctx) => {
       .write();
   }
 
-  return ctx.replyWithMarkdown('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n1. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
+  return ctx.replyWithMarkdown('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n1. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
     .catch((err) => {
       console.log(err);
     });
@@ -70,7 +70,7 @@ bot.command('help', (ctx) => {
       .write();
   }
 
-  return ctx.replyWithMarkdown('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n1. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
+  return ctx.replyWithMarkdown('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n1. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
     .catch((err) => {
       console.log(err);
     });
