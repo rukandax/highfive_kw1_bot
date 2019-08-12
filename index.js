@@ -227,7 +227,9 @@ bot.command('givepoint', (ctx) => {
     'Temen-temen pada nanyain tuh. Kapan bayar hutang ?',
   ];
 
-  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${textArray[0]} udah ${message}. ${endTexts[0]}`;
+  const endTextsIndex = parseInt(Math.random() * 3);
+
+  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}`;
 
   return ctx.reply(output, { chat_id: -1001113266099 })
     .catch((err) => {
