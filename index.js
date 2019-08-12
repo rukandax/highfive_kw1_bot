@@ -53,7 +53,7 @@ bot.start((ctx) => {
       .write();
   }
 
-  return ctx.replyWithMarkdown('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
+  return ctx.replyWithMarkdown('*Halo, ada yang bisa Anak Ibu Susi bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Anak Ibu Susi seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Anak Ibu Susi seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
     .catch((err) => {
       console.log(err);
     });
@@ -70,7 +70,7 @@ bot.command('help', (ctx) => {
       .write();
   }
 
-  return ctx.replyWithMarkdown('*Halo, ada yang bisa Raisha KW 1 bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Raisha KW 1 seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Raisha KW 1 seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
+  return ctx.replyWithMarkdown('*Halo, ada yang bisa Anak Ibu Susi bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Anak Ibu Susi seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Anak Ibu Susi seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n')
     .catch((err) => {
       console.log(err);
     });
@@ -229,7 +229,7 @@ bot.command('givepoint', (ctx) => {
 
   const endTextsIndex = parseInt(Math.random() * endTexts.length);
 
-  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Raisha KW 1 kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}`;
+  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Anak Ibu Susi kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}`;
 
   return ctx.reply(output, { chat_id: -1001113266099 })
     .catch((err) => {
