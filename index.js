@@ -167,20 +167,10 @@ bot.command('highfive', (ctx) => {
 
   if (poin > 5000) {
     type = 'Wadaww';
-    applyFee = true;
   }
 
   if (poin > 10000) {
     type = 'Wadidaww';
-    applyFee = true;
-  }
-
-  if (applyFee) {
-    ctx.reply('Per 30 Juli 2019, setiap highfive dengan nilai diatas 5000 dikenakan fee sebesar 2%.\n\n-- TTD Revenue Tribe --', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
-    
-    poin = parseInt(poin - (poin * 2 / 100));
   }
 
   const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
