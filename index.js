@@ -107,8 +107,6 @@ bot.command('myid', (ctx) => {
 });
 
 bot.command('highfive', (ctx) => {
-  return;
-
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
                 .value();
@@ -180,17 +178,15 @@ bot.command('highfive', (ctx) => {
 
   const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
 
-  return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
-    .catch(() => {
-      return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err);
-      });
-    });
+  // return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
+  //   .catch(() => {
+  //     return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  //       console.log(err);
+  //     });
+  //   });
 });
 
 bot.command('givepoint', (ctx) => {
-  return;
-  
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
                 .value();
@@ -237,10 +233,10 @@ bot.command('givepoint', (ctx) => {
 
   const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Anak Ibu Susi kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}`;
 
-  return ctx.reply(output, { chat_id: -1001113266099 })
-    .catch((err) => {
-      console.log(err);
-    });
+  // return ctx.reply(output, { chat_id: -1001113266099 })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 });
 
 const findInstagram = async (ctx, target = '') => {
