@@ -101,7 +101,7 @@ bot.command('myid', (ctx) => {
       .write();
   }
 
-  return ctx.reply(`ID Telegram kamu adalah = ${ctx.message.from.id}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  return ctx.replyWithHTML(`ID Telegram kamu adalah = ${ctx.message.from.id}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 });
@@ -141,7 +141,7 @@ bot.command('highfive', (ctx) => {
   }
 
   if (poin === null || message.length <= 0 || users.length <= 0) {
-    return ctx.reply('Format salah, gunakan format highfive seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML('Format salah, gunakan format highfive seperti biasa tanpa kode kategori.\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -176,14 +176,14 @@ bot.command('highfive', (ctx) => {
     type = 'Wadidaww';
   }
 
-  const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>`;
+  const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>`;
 
-  // return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
-  //   .catch(() => {
-  //     return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-  //       console.log(err);
-  //     });
-  //   });
+  return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
+    .catch(() => {
+      return ctx.replyWithHTML('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err);
+      });
+    });
 });
 
 bot.command('givepoint', (ctx) => {
@@ -209,7 +209,7 @@ bot.command('givepoint', (ctx) => {
   let textArray = text.split(' ');
 
   if (!textArray[0].includes('@')) {
-    return ctx.reply('User tidak ditemukan, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML('User tidak ditemukan, gunakan format givepoint seperti biasa tanpa kode kategori.\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -217,7 +217,7 @@ bot.command('givepoint', (ctx) => {
   message = textArray.slice(1).join(' ');
 
   if (message.length < 2) {
-    return ctx.reply('Pesan tidak boleh kosong, gunakan format givepoint seperti biasa tanpa kode kategori.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML('Pesan tidak boleh kosong, gunakan format givepoint seperti biasa tanpa kode kategori.\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -231,9 +231,9 @@ bot.command('givepoint', (ctx) => {
 
   const endTextsIndex = parseInt(Math.random() * endTexts.length);
 
-  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Anak Ibu Susi kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}`;
+  const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Anak Ibu Susi kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>`;
 
-  // return ctx.reply(output, { chat_id: -1001113266099 })
+  // return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
   //   .catch((err) => {
   //     console.log(err);
   //   });
@@ -257,7 +257,7 @@ const findInstagram = async (ctx, target = '') => {
       }
 
       if (ctx.message.reply_to_message.from.is_bot) {
-        return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        return ctx.replyWithHTML('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
       }
@@ -270,7 +270,7 @@ const findInstagram = async (ctx, target = '') => {
         }
 
         if (ctx.message.reply_to_message.forward_from.is_bot) {
-          return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          return ctx.replyWithHTML('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
             console.log(err);
           });
         }
@@ -279,13 +279,13 @@ const findInstagram = async (ctx, target = '') => {
   }
 
   if (name.length <= 0) {
-    return ctx.reply('Mau cari instagram siapa ?', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML('Mau cari instagram siapa ?', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
 
   ctx.replyWithHTML(`Bentar dicari dulu <b>${name}</b>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    return ctx.reply('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   });
@@ -309,7 +309,7 @@ const findInstagram = async (ctx, target = '') => {
 
       return users;
     }).catch(() => {
-      return ctx.reply('Service Down', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      return ctx.replyWithHTML('Service Down', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
         console.log(err);
       });
     })
@@ -333,12 +333,12 @@ const findInstagram = async (ctx, target = '') => {
 
     users = users.slice(0, 20);
 
-    return ctx.reply(`Nemu nih ${users.length} akun\n\n${users.join("\n")}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML(`Nemu nih ${users.length} akun\n\n${users.join("\n")}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
 
-  return ctx.reply('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  return ctx.replyWithHTML('Sorry gak nemu', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 };
