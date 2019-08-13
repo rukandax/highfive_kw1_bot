@@ -233,10 +233,10 @@ bot.command('givepoint', (ctx) => {
 
   const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Anak Ibu Susi kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>`;
 
-  // return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+  return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 const findInstagram = async (ctx, target = '') => {
