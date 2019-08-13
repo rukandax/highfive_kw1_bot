@@ -55,7 +55,7 @@ bot.start((ctx) => {
       .write();
   }
 
-  return ctx.replyWithMarkdown('*Halo, ada yang bisa Anak Ibu Susi bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Anak Ibu Susi seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Anak Ibu Susi seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n\n*Bot ini adalah versi parody dari @ibususi_bot setiap pesan yang masuk tidak akan dimoderasi, disimpan ataupun diproses dalam bentuk apapun.\n\nSo please use it wisely.*')
+  return ctx.replyWithMarkdown('*Halo, ada yang bisa Anak Ibu Susi bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Anak Ibu Susi seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Anak Ibu Susi seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n\n_Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi, disimpan ataupun diproses dalam bentuk apapun._\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot')
     .catch((err) => {
       console.log(err);
     });
@@ -72,7 +72,7 @@ bot.command('help', (ctx) => {
       .write();
   }
 
-  return ctx.replyWithMarkdown('*Halo, ada yang bisa Anak Ibu Susi bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Anak Ibu Susi seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Anak Ibu Susi seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n\n*Bot ini adalah versi parody dari @ibususi_bot setiap pesan yang masuk tidak akan dimoderasi, disimpan ataupun diproses dalam bentuk apapun.\n\nSo please use it wisely.*')
+  return ctx.replyWithMarkdown('*Halo, ada yang bisa Anak Ibu Susi bantu hari ini?*\n\n1. Kalau kamu mau givepoint, cerita dulu sama Anak Ibu Susi seperti ini ya:\n`/givepoint [@usernameteman] [alasan]`\n2. Kalau kamu mau highfive, kirim perintah highfive ke Anak Ibu Susi seperti ini ya:\n`/highfive [@usernameteman] [@usernametemanlain] [poin] [alasan]`\n3. Gak perlu pakai kode kategori.\n\n_Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi, disimpan ataupun diproses dalam bentuk apapun._\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot')
     .catch((err) => {
       console.log(err);
     });
