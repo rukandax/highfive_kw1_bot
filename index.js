@@ -20,7 +20,7 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
 
   const payday = new Date();
   payday.setDate(27);
-  
+
   if(payday.getDay() == 0) {
     dayBeforePayday.setDate(payday.getDate() - 3);
   } else if (payday.getDay() == 6) {
@@ -43,6 +43,20 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
     });
   }
 });
+
+const END_CORE_HOUR = '0 17 * * 1-5';
+
+Schedule.scheduleJob('endCoreHour', END_CORE_HOUR, () => {
+  const message = '📢 Teet teet teet~ core hour udah berakhir~'
+
+  bot.telegram.sendMessage(-1001113266099, message).catch((err) => {
+    console.log(err);
+  });
+
+  bot.telegram.sendMessage(-1001270555525, message).catch((err) => {
+    console.log(err);
+  });
+})
 
 bot.start((ctx) => {
   const user = db.get('id')
@@ -151,7 +165,7 @@ bot.command('highfive', (ctx) => {
   if (poin < 0) {
     type = 'Hehehe';
   }
-  
+
   if (poin >= 5) {
     type = 'Cool';
   }
@@ -269,7 +283,7 @@ const findInstagram = async (ctx, target = '') => {
           console.log(err);
         });
       }
-    
+
       if (ctx.message.reply_to_message.forward_from) {
         name = ctx.message.reply_to_message.forward_from.first_name;
 
