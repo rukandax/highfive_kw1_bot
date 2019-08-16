@@ -20,7 +20,7 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
 
   const payday = new Date();
   payday.setDate(27);
-
+  
   if(payday.getDay() == 0) {
     dayBeforePayday.setDate(payday.getDate() - 3);
   } else if (payday.getDay() == 6) {
@@ -165,7 +165,7 @@ bot.command('highfive', (ctx) => {
   if (poin < 0) {
     type = 'Hehehe';
   }
-
+  
   if (poin >= 5) {
     type = 'Cool';
   }
@@ -283,7 +283,7 @@ const findInstagram = async (ctx, target = '') => {
           console.log(err);
         });
       }
-
+    
       if (ctx.message.reply_to_message.forward_from) {
         name = ctx.message.reply_to_message.forward_from.first_name;
 
