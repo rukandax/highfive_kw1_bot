@@ -44,6 +44,20 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
   }
 });
 
+const END_CORE_HOUR = '0 17 * * 1-5';
+
+Schedule.scheduleJob('endCoreHour', END_CORE_HOUR, () => {
+  const message = '📢 Teet teet teet~ core hour udah berakhir~'
+
+  bot.telegram.sendMessage(-1001113266099, message).catch((err) => {
+    console.log(err);
+  });
+
+  bot.telegram.sendMessage(-1001270555525, message).catch((err) => {
+    console.log(err);
+  });
+})
+
 bot.start((ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
