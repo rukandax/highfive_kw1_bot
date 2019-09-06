@@ -14,9 +14,13 @@ const db = low(adapter);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-Schedule.scheduleJob('payday', '00 13 * * *', () => {
-  let dayBeforePayday = new Date();
+const PAYDAY_HOUR = '0 11 * * 1-5';
+
+Schedule.scheduleJob('payday', PAYDAY_HOUR, () => {
   const today = new Date();
+
+  const dayBeforePayday = new Date();
+  dayBeforePayday.setDate(26);
 
   const payday = new Date();
   payday.setDate(27);
@@ -25,20 +29,16 @@ Schedule.scheduleJob('payday', '00 13 * * *', () => {
     dayBeforePayday.setDate(payday.getDate() - 3);
   } else if (payday.getDay() == 6) {
     dayBeforePayday.setDate(payday.getDate() - 2);
-  } else {
-    dayBeforePayday = null;
   }
 
-  if (
-    dayBeforePayday
-    &&
-    today.getDate() === dayBeforePayday.getDate()
-  ) {
-    bot.telegram.sendMessage(-1001113266099, 'Besok gajian gaesss~~').catch((err) => {
+  if (today.getDate() === dayBeforePayday.getDate()) {
+    const message = '📢 Besok gajian gaesss~~';
+    
+    bot.telegram.sendMessage(-1001113266099, message).catch((err) => {
       console.log(err);
     });
 
-    bot.telegram.sendMessage(-1001270555525, 'Besok gajian gaesss~~').catch((err) => {
+    bot.telegram.sendMessage(-1001270555525, message).catch((err) => {
       console.log(err);
     });
   }
