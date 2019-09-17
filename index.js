@@ -312,7 +312,7 @@ const findInstagram = async (ctx, target = '') => {
     });
   });
 
-  const links = await axios.get(`https://gramuser.com/search/${name}`)
+  const links = await axios.get(`https://gramusers.com/search/${name}`)
     .then(({ data }) => {
       const users = [];
 
@@ -320,7 +320,7 @@ const findInstagram = async (ctx, target = '') => {
       const usersEl = $('.timg');
 
       usersEl.each((_, el) => {
-        const username = $(el).attr('href').replace('http://gramuser.com/user/', '');
+        const username = $(el).attr('href').replace('http://gramusers.com/user/', '');
         const followers = $(el).html().replace(/,/gi, '').match(/([0-9,]+) followers/)[1];
 
         users.push({
