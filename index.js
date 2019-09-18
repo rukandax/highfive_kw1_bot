@@ -58,6 +58,31 @@ Schedule.scheduleJob('endCoreHour', END_CORE_HOUR, () => {
   });
 })
 
+let isWebDown = false;
+const UP_MONITOR = '*/5 * * * *';
+
+Schedule.scheduleJob('upMonitor', UP_MONITOR, () => {
+  const message = 'Bukalapak down ya ?'
+
+  ping('https://www.bukalapak.com/version.txt')
+    .then(() => {
+      isWebDown = false;
+    })
+    .catch(() => {
+      if (!isWebDown) {
+        isWebDown = true;
+
+        bot.telegram.sendMessage(-1001113266099, message).catch((err) => {
+          console.log(err);
+        });
+      
+        bot.telegram.sendMessage(-1001270555525, message).catch((err) => {
+          console.log(err);
+        });
+      }
+    });
+})
+
 bot.start((ctx) => {
   const user = db.get('id')
                 .find({ id: ctx.message.from.id })
