@@ -6,6 +6,7 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const ping = require('web-pingjs');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -66,9 +67,11 @@ Schedule.scheduleJob('upMonitor', UP_MONITOR, () => {
 
   ping('https://www.bukalapak.com/version.txt')
     .then(() => {
+      console.log('masih oke');
       isWebDown = false;
     })
     .catch(() => {
+      console.log('down');
       if (!isWebDown) {
         isWebDown = true;
 
