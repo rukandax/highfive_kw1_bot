@@ -2,9 +2,12 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 require('dotenv').config();
 
+const fs = require('fs');
 const Telegraf = require('telegraf');
 const Schedule = require('node-schedule')
+const axios = require('axios');
 const ping = require('web-pingjs');
+const puppeteer = require('puppeteer');
 
 const {
   greeting
@@ -194,6 +197,85 @@ bot.command('givepoint', (ctx) => {
 bot.command('instagram', (ctx) => {
   findInstagram(ctx);
 });
+
+bot.on('photo', async (ctx) => {
+  ctx.reply('Sebentar ya, aku perhatiin baik-baik dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
+
+  const photo = ctx.message.photo[2] || ctx.message.photo[1]
+
+  if (!photo) {
+    return ctx.reply('Duh mataku kelilipan 😷 coba kirimin lagi gambarnya', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  const photoLink = await ctx.telegram.getFileLink(photo.file_id)
+
+  let photoExt = photoLink.split('.');
+  photoExt = photoExt[photoExt.length - 1];
+
+  const photoPath = await axios({
+    url: photoLink,
+    method: 'GET',
+    responseType: 'arraybuffer',
+  }).then(({ data }) => {
+    const outputFilename = `/tmp/highfive_kw1_bot_image.${photoExt}`;
+    fs.writeFileSync(outputFilename, data);
+
+    return outputFilename;
+  });
+
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  await page.setRequestInterception(true);
+
+  page.on('request', interceptedRequest => {
+    if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg') || interceptedRequest.url().endsWith('.jpeg') || interceptedRequest.url().endsWith('.css'))
+      interceptedRequest.abort();
+    else
+      interceptedRequest.continue();
+  });
+
+  await page.goto('https://hotness.ai/', {
+    timeout: 3000000
+  });
+
+  const input = await page.$('#imgFile')
+  await input.uploadFile(photoPath)
+  
+  await page.waitForFunction(
+    'document.querySelector("#hotText").innerText.includes("Your Attractiveness Score is") || document.querySelector("#hotText").innerText.includes("Error")',
+  );
+
+  const score = await page.evaluate(() => {
+    return document.querySelector("#hotText").innerText.replace('Your Attractiveness Score is ', '').replace(' out of 10', '');
+  });
+
+  await browser.close();
+
+  let response = 'Mukanya yang sebelah mana sih ? Gak jelas.. 😒';
+
+  if (score >= 0) {
+    response = '😨 Ihh.. Jelek.. 😨';
+  }
+
+  if (score >= 4) {
+    response = 'Hmmm, biasa aja sih 😌 yang kayak gini mah pasaran';
+  }
+
+  if (score >= 7) {
+    response = 'Lumayan lah.. Masih cocok dibawa-bawa ketemu mantan 😄';
+  }
+
+  if (score >= 9) {
+    response = 'Kiw.. Kiw.. Bisa kali~~ 😎😍';
+  }
+
+  return ctx.reply(response, { reply_to_message_id: ctx.message.message_id })
+})
 
 bot.hears(/./gi, (ctx) => {
   if (
