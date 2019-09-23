@@ -262,7 +262,7 @@ bot.on('photo', async (ctx) => {
     response = '😨 Ihh.. Jelek.. 😨';
   }
 
-  if (score >= 4) {
+  if (score >= 5) {
     response = 'Hmmm, biasa aja sih 😌 yang kayak gini mah pasaran';
   }
 
@@ -272,6 +272,10 @@ bot.on('photo', async (ctx) => {
 
   if (score >= 9) {
     response = 'Kiw.. Kiw.. Bisa kali~~ 😎😍';
+  }
+
+  if (!isNaN(parseInt(score))) {
+    response = `${response} .. ${parseInt(score)} ini`
   }
 
   return ctx.reply(response, { reply_to_message_id: ctx.message.message_id })
