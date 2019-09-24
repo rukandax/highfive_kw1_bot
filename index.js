@@ -279,7 +279,15 @@ bot.on('photo', async (ctx) => {
     });
   } else {
     const selector = '.onp-sl-social-button-twitter-tweet';
-    await page.evaluate((selector) => document.querySelector(selector).click(), selector); 
+
+    await page.$(selector)
+    await page.evaluate((selector) => {
+      const button = document.querySelector(selector)
+
+      if (button) {
+        button.click()
+      }
+    }, selector); 
 
     ctx.reply('Duh mataku kelilipan 😷 coba kirimin lagi gambarnya', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
