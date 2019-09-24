@@ -200,10 +200,18 @@ bot.command('instagram', (ctx) => {
 
 let isBeautyMeterActive = false;
 bot.command('startbeautymeter', (ctx) => {
+  ctx.reply('Sip, kirimin aja foto nya bosque..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
+
   isBeautyMeterActive = true;
 })
 
 bot.command('stopbeautymeter', (ctx) => {
+  ctx.reply('Okedeh..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    console.log(err);
+  });
+
   isBeautyMeterActive = false;
 })
 
@@ -257,15 +265,26 @@ bot.on('photo', async (ctx) => {
   });
 
   const input = await page.$('#imgFile')
-  await input.uploadFile(photoPath)
-  
-  await page.waitForFunction(
-    'document.querySelector("#hotText").innerText.includes("Your Attractiveness Score is") || document.querySelector("#hotText").innerText.includes("Error")',
-  );
+  let score = 0;
 
-  const score = await page.evaluate(() => {
-    return document.querySelector("#hotText").innerText.replace('Your Attractiveness Score is ', '').replace(' out of 10', '');
-  });
+  if (input) {
+    await input.uploadFile(photoPath)
+    
+    await page.waitForFunction(
+      'document.querySelector("#hotText").innerText.includes("Your Attractiveness Score is") || document.querySelector("#hotText").innerText.includes("Error")',
+    );
+  
+    score = await page.evaluate(() => {
+      return document.querySelector("#hotText").innerText.replace('Your Attractiveness Score is ', '').replace(' out of 10', '');
+    });
+  } else {
+    const selector = '.onp-sl-social-button-twitter-tweet';
+    await page.evaluate((selector) => document.querySelector(selector).click(), selector); 
+
+    ctx.reply('Duh mataku kelilipan 😷 coba kirimin lagi gambarnya', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
 
   await browser.close();
 
