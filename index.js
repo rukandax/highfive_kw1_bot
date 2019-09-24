@@ -198,7 +198,20 @@ bot.command('instagram', (ctx) => {
   findInstagram(ctx);
 });
 
+let isBeautyMeterActive = false;
+bot.command('startbeautymeter', (ctx) => {
+  isBeautyMeterActive = true;
+})
+
+bot.command('stopbeautymeter', (ctx) => {
+  isBeautyMeterActive = false;
+})
+
 bot.on('photo', async (ctx) => {
+  if (!isBeautyMeterActive) {
+    return;
+  }
+
   ctx.reply('Sebentar ya, aku perhatiin baik-baik dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
