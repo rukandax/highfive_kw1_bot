@@ -205,11 +205,9 @@ bot.command('beautymeter', (ctx) => {
 })
 
 bot.on('photo', async (ctx) => {
-  if (
-    !ctx.message.reply_to_message
-      ||
-    ctx.message.reply_to_message.from.username !== 'highfive_kw1_bot'
-  ) return;
+  if (!ctx.message.reply_to_message || ctx.message.reply_to_message.from.username !== 'highfive_kw1_bot') {
+    return;
+  }
 
   ctx.reply('Sebentar ya, aku perhatiin baik-baik dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
