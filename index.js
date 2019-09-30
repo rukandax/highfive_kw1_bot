@@ -198,27 +198,18 @@ bot.command('instagram', (ctx) => {
   findInstagram(ctx);
 });
 
-let isBeautyMeterActive = false;
-bot.command('startbeautymeter', (ctx) => {
+bot.command('beautymeter', (ctx) => {
   ctx.reply('Sip, kirimin aja foto nya bosque..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
-
-  isBeautyMeterActive = true;
-})
-
-bot.command('stopbeautymeter', (ctx) => {
-  ctx.reply('Okedeh..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err);
-  });
-
-  isBeautyMeterActive = false;
 })
 
 bot.on('photo', async (ctx) => {
-  if (!isBeautyMeterActive) {
-    return;
-  }
+  if (
+    ctx.message.reply_to_message
+      &&
+    ctx.message.reply_to_message.from.username !== 'highfive_kw1_bot'
+  ) return;
 
   ctx.reply('Sebentar ya, aku perhatiin baik-baik dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
