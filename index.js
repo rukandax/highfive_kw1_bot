@@ -206,8 +206,8 @@ bot.command('beautymeter', (ctx) => {
 
 bot.on('photo', async (ctx) => {
   if (
-    ctx.message.reply_to_message
-      &&
+    !ctx.message.reply_to_message
+      ||
     ctx.message.reply_to_message.from.username !== 'highfive_kw1_bot'
   ) return;
 
