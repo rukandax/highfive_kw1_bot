@@ -6,7 +6,6 @@ const fs = require('fs');
 const Telegraf = require('telegraf');
 const Schedule = require('node-schedule')
 const axios = require('axios');
-const ping = require('web-pingjs');
 const puppeteer = require('puppeteer');
 
 const {
@@ -55,9 +54,19 @@ let isWebDown = false;
 Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
   const message = 'Bukalapak down ya ?'
 
-  ping('https://www.bukalapak.com/version.txt')
-    .then(() => {
-      isWebDown = false;
+  axios.get('https://www.bukalapak.com/version.txt')
+    .then(({ data }) => {
+      if (data.trim().length === 32) {
+        isWebDown = false;
+      } else {
+        if (!isWebDown) {
+          isWebDown = true;
+  
+          bot.telegram.sendMessage(-1001113266099, message).catch((err) => {
+            console.log(err);
+          });
+        }
+      }
     })
     .catch(() => {
       if (!isWebDown) {
