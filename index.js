@@ -56,7 +56,7 @@ Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
 
   axios.get('https://www.bukalapak.com/version.txt')
     .then(({ data }) => {
-      if (data.trim().length === 32) {
+      if (data.trim().length === 40) {
         isWebDown = false;
       } else {
         if (!isWebDown) {
