@@ -340,6 +340,16 @@ bot.hears(/./gi, (ctx) => {
   ) {
     findInstagram(ctx, ctx.message.text);
   }
+
+  if (
+    ctx.message.reply_to_message
+      &&
+    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
+      &&
+    ctx.message.reply_to_message.text === 'Username instagram nya siapa ?'
+  ) {
+    getMostLikedIgPost(ctx, ctx.message.text);
+  }
 });
 
 bot.launch();

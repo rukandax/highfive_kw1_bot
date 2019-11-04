@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 
-async function getMostLikedIgPost(ctx) {
+async function getMostLikedIgPost(ctx, target = '') {
+  let username = target;
+  
   if (ctx.message.text.includes('/mostlikedigpost@highfive_kw1_bot')) {
     username = ctx.message.text.replace('/mostlikedigpost@highfive_kw1_bot', '').trim();
   } else {
@@ -8,6 +10,12 @@ async function getMostLikedIgPost(ctx) {
   }
 
   username = username.replace('@', '');
+
+  if (name.length <= 0) {
+    return ctx.replyWithHTML('Username instagram nya siapa ?', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
 
   ctx.reply('Sebentar ya, aku liat-liat dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
