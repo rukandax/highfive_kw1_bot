@@ -43,13 +43,12 @@ async function getMostLikedIgPost(ctx, target = '') {
     timeout: 3000000
   });
 
-  await page.waitForSelector('.bio-name');
   await page.waitForFunction(
-    'document.querySelector(".card-img-top").getAttribute("src")',
+    'document.querySelector(".js-most-popular .card-img-top").getAttribute("src")',
   );
 
   const mostlikedigpost = await page.evaluate(() => {
-    return document.querySelector(".card-img-top").getAttribute('src');
+    return document.querySelector(".js-most-popular .card-img-top").getAttribute('src');
   });
 
   await browser.close();
