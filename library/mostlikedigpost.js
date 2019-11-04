@@ -30,25 +30,23 @@ async function getMostLikedIgPost(ctx, target = '') {
   });
 
   const page = await browser.newPage();
-  await page.setRequestInterception(true);
-
-  page.on('request', interceptedRequest => {
-    if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg') || interceptedRequest.url().endsWith('.jpeg') || interceptedRequest.url().endsWith('.css'))
-      interceptedRequest.abort();
-    else
-      interceptedRequest.continue();
-  });
-
   await page.goto(`https://analisa.io/profile/${username}`, {
     timeout: 3000000
   });
 
   await page.waitForFunction(
-    'document.querySelector(".js-most-popular .card-img-top").getAttribute("src")',
+    'document.querySelector(".post-01 .card-img-top") && document.querySelector(".post-01 .card-img-top").getAttribute("src")',
   );
 
   const mostlikedigpost = await page.evaluate(() => {
-    return document.querySelector(".js-most-popular .card-img-top").getAttribute('src');
+    const image = [];
+    const itemElements = document.querySelectorAll(".post-01 .card-img-top");
+
+    itemElements.forEach((itemElement) => {
+      image.push(itemElement.getAttribute('src'));
+    });
+
+    return image[parseInt(Math.random() * image.length)];
   });
 
   await browser.close();
