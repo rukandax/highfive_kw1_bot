@@ -17,7 +17,7 @@ async function getMostLikedIgPost(ctx, target = '') {
     });
   }
 
-  ctx.reply('Sebentar ya, aku liat-liat dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  ctx.reply(`Sebentar ya, aku liat-liat dulu.. https://www.instagram.com/${username}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 
@@ -52,7 +52,9 @@ async function getMostLikedIgPost(ctx, target = '') {
   
     await browser.close();
 
-    ctx.replyWithPhoto(mostlikedigpost);
+    ctx.replyWithPhoto(mostlikedigpost, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
   } catch (err) {
     ctx.reply('Gak ketemu nih, mungkin akun nya di private..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
