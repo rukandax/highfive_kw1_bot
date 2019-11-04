@@ -21,37 +21,43 @@ async function getMostLikedIgPost(ctx, target = '') {
     console.log(err);
   });
 
-  const browser = await puppeteer.launch({
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-    ],
-    headless: true,
-  });
-
-  const page = await browser.newPage();
-  await page.goto(`https://analisa.io/profile/${username}`, {
-    timeout: 3000000
-  });
-
-  await page.waitForFunction(
-    'document.querySelector(".post-01 .card-img-top") && document.querySelector(".post-01 .card-img-top").getAttribute("src")',
-  );
-
-  const mostlikedigpost = await page.evaluate(() => {
-    const image = [];
-    const itemElements = document.querySelectorAll(".post-01 .card-img-top");
-
-    itemElements.forEach((itemElement) => {
-      image.push(itemElement.getAttribute('src'));
+  try {
+    const browser = await puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ],
+      headless: true,
     });
+  
+    const page = await browser.newPage();
+    await page.goto(`https://analisa.io/profile/${username}`, {
+      timeout: 3000000
+    });
+  
+    await page.waitForFunction(
+      'document.querySelector(".post-01 .card-img-top") && document.querySelector(".post-01 .card-img-top").getAttribute("src")',
+    );
+  
+    const mostlikedigpost = await page.evaluate(() => {
+      const image = [];
+      const itemElements = document.querySelectorAll(".post-01 .card-img-top");
+  
+      itemElements.forEach((itemElement) => {
+        image.push(itemElement.getAttribute('src'));
+      });
+  
+      return image[parseInt(Math.random() * image.length)];
+    });
+  
+    await browser.close();
 
-    return image[parseInt(Math.random() * image.length)];
-  });
-
-  await browser.close();
-
-  ctx.replyWithPhoto(mostlikedigpost);
+    ctx.replyWithPhoto(mostlikedigpost);
+  } catch (err) {
+    ctx.reply('Gak ketemu nih, mungkin akun nya di private..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
 }
 
 module.exports = {
