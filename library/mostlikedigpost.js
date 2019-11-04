@@ -17,7 +17,7 @@ async function getMostLikedIgPost(ctx, target = '') {
     });
   }
 
-  ctx.reply(`Sebentar ya, aku liat-liat dulu.. https://www.instagram.com/${username}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  ctx.reply('Sebentar ya, aku liat-liat dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 
@@ -42,9 +42,13 @@ async function getMostLikedIgPost(ctx, target = '') {
     const mostlikedigpost = await page.evaluate(() => {
       const image = [];
       const itemElements = document.querySelectorAll(".post-01 .card-img-top");
+
+      const max_rank = 3;
   
       itemElements.forEach((itemElement) => {
-        image.push(itemElement.getAttribute('src'));
+        if (image.length < max_rank) {
+          image.push(itemElement.getAttribute('src'));
+        }
       });
   
       return image[parseInt(Math.random() * image.length)];
