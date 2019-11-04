@@ -16,6 +16,10 @@ const {
   findInstagram
 } = require('./library/instagram');
 
+const {
+  getMostLikedIgPost
+} = require('./library/mostlikedigpost');
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 Schedule.scheduleJob('payday', '0 11 * * 1-5', () => {
@@ -208,6 +212,10 @@ bot.command('givepoint', (ctx) => {
 
 bot.command('instagram', (ctx) => {
   findInstagram(ctx);
+});
+
+bot.command('mostlikedigpost', (ctx) => {
+  getMostLikedIgPost(ctx);
 });
 
 bot.command('beautymeter', (ctx) => {
