@@ -82,6 +82,9 @@ Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
 bot.start(greeting);
 bot.command('help', greeting);
 
+const NOTICE_TEXT = '\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>';
+const NOTIF_TEXT_FULL = `${NOTICE_TEXT}\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot`;
+
 bot.command('highfive', (ctx) => {
   let pushToUser = true;
   const users = [];
@@ -107,7 +110,7 @@ bot.command('highfive', (ctx) => {
   }
 
   if (poin === null || message.length <= 0 || users.length <= 0) {
-    return ctx.replyWithHTML('Format salah, gunakan format highfive seperti biasa tanpa kode kategori.\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML(`Format salah, gunakan format highfive seperti biasa tanpa kode kategori.${NOTIF_TEXT_FULL}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -142,11 +145,11 @@ bot.command('highfive', (ctx) => {
     type = 'Wadidaww';
   }
 
-  ctx.replyWithHTML('<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  ctx.replyWithHTML(NOTIF_TEXT_FULL, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 
-  const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>`;
+  const output = `${type} highfive! @${ctx.message.from.username} berbagi ${users.length > 1 ? 'masing-masing ' : ''}<b>${poin}</b> poin untuk:\n${users.join('\n')}\nkarena <b>${message.trim()}</b>${NOTICE_TEXT}`;
 
   return ctx.replyWithHTML(output, { chat_id: -1001113266099 })
     .catch(() => {
@@ -169,7 +172,7 @@ bot.command('givepoint', (ctx) => {
   let textArray = text.split(' ');
 
   if (!textArray[0].includes('@')) {
-    return ctx.replyWithHTML('User tidak ditemukan, gunakan format givepoint seperti biasa tanpa kode kategori.\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML(`User tidak ditemukan, gunakan format givepoint seperti biasa tanpa kode kategori.${NOTIF_TEXT_FULL}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -177,7 +180,7 @@ bot.command('givepoint', (ctx) => {
   message = textArray.slice(1).join(' ');
 
   if (message.length < 2) {
-    return ctx.replyWithHTML('Pesan tidak boleh kosong, gunakan format givepoint seperti biasa tanpa kode kategori.\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML(`Pesan tidak boleh kosong, gunakan format givepoint seperti biasa tanpa kode kategori.${NOTIF_TEXT_FULL}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -193,7 +196,7 @@ bot.command('givepoint', (ctx) => {
 
   const output = `${ctx.message.from.first_name ? ctx.message.from.first_name : ''} ${ctx.message.from.last_name ? ctx.message.from.last_name : ''} (@${ctx.message.from.username}) abis cerita sama Anak Ibu Susi kalau ${textArray[0]} udah ${message}. ${endTexts[endTextsIndex]}\n\n<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>`;
 
-  ctx.replyWithHTML('<i>Bot ini adalah versi parody dari "Ibu Susi", setiap pesan yang masuk tidak akan dimoderasi ataupun disimpan.</i>\n\nJika anda berniat menggunakan bot highfive yang sebenarnya, gunakan @ibususi_bot', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  ctx.replyWithHTML(NOTIF_TEXT_FULL, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 
