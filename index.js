@@ -227,7 +227,7 @@ bot.command('beautymeter', (ctx) => {
 })
 
 bot.command('shout', (ctx) => {
-  ctx.replyWithHTML(`Mau ngomong apa bosque ??`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  ctx.replyWithHTML('Mau ngirim apa bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 })
@@ -274,16 +274,6 @@ bot.on('photo', async (ctx) => {
     return ctx.reply('Duh mataku kelilipan 😷 coba kirimin lagi gambarnya', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
-  }
-
-  if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
-    ctx.message.reply_to_message.text === 'Mana nih foto nya bosque ??'
-  ) {
-
   }
 
   if (
@@ -413,7 +403,7 @@ bot.hears(/./gi, (ctx) => {
       &&
     ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
       &&
-    ctx.message.reply_to_message.text === 'Mau ngomong apa bosque ??'
+    ctx.message.reply_to_message.text === 'Mau ngirim apa bosque ??'
   ) {
     if (ctx.message.text === '📢 Teet teet teet~ core hour udah berakhir~') {
       return ctx.reply('Dilarang shout core hour berakhir !!!', { reply_to_message_id: ctx.message.message_id })
