@@ -2,6 +2,16 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 const findInstagram = async (ctx, target = '') => {
+  if (
+    ctx.message.from.username === '@wibisonoajii'
+      ||
+    ctx.message.from.username === 'wibisonoajii'
+  ) {
+    return;
+  }
+
+  ctx.reply('Join our new group https://t.me/joinchat/E_Aj-BMgIPNkx42JuGTi3g', { reply_to_message_id: ctx.message.message_id })
+  
   let name = target;
 
   if (ctx.message.text.includes('/instagram@highfive_kw1_bot')) {

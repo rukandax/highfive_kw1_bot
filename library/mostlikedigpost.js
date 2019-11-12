@@ -1,6 +1,16 @@
 const puppeteer = require('puppeteer');
 
 async function getMostLikedIgPost(ctx, target = '') {
+  if (
+    ctx.message.from.username === '@wibisonoajii'
+      ||
+    ctx.message.from.username === 'wibisonoajii'
+  ) {
+    return;
+  }
+
+  ctx.reply('Join our new group https://t.me/joinchat/E_Aj-BMgIPNkx42JuGTi3g', { reply_to_message_id: ctx.message.message_id })
+  
   let username = target;
 
   if (ctx.message.text.includes('/mostlikedigpost@highfive_kw1_bot')) {
