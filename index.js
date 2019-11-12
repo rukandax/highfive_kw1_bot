@@ -43,14 +43,14 @@ Schedule.scheduleJob('payday', '0 11 * * 1-5', () => {
   if (today.getDate() === dayBeforePayday.getDate()) {
     const message = '📢 Besok gajian gaesss~~';
     
-    bot.telegram.sendMessage(-320872691, message).catch((err) => {
+    bot.telegram.sendMessage(-1001430743348, message).catch((err) => {
       console.log(err);
     });
   }
 });
 
 Schedule.scheduleJob('endCoreHour', '0 17 * * 1-5', () => {
-  bot.telegram.sendMessage(-320872691, CORE_HOUR_END).catch((err) => {
+  bot.telegram.sendMessage(-1001430743348, CORE_HOUR_END).catch((err) => {
     console.log(err);
   });
 })
@@ -67,7 +67,7 @@ Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
         if (!isWebDown) {
           isWebDown = true;
   
-          bot.telegram.sendMessage(-320872691, message).catch((err) => {
+          bot.telegram.sendMessage(-1001430743348, message).catch((err) => {
             console.log(err);
           });
         }
@@ -77,7 +77,7 @@ Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
       if (!isWebDown) {
         isWebDown = true;
 
-        bot.telegram.sendMessage(-320872691, message).catch((err) => {
+        bot.telegram.sendMessage(-1001430743348, message).catch((err) => {
           console.log(err);
         });
       }
@@ -192,7 +192,7 @@ bot.command('deleteshout', (ctx) => {
   }
 
   if (decoded > 0) {
-    return bot.telegram.deleteMessage(-320872691, parseInt(decoded)).catch((err) => {
+    return bot.telegram.deleteMessage(-1001430743348, parseInt(decoded)).catch(() => {
       ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
         console.log(err);
       });
@@ -201,26 +201,6 @@ bot.command('deleteshout', (ctx) => {
     console.log(decoded);
   }
 })
-
-bot.on('message', (ctx) => {
-  if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
-    ctx.message.reply_to_message.text === CORE_HOUR_END
-  ) {
-    axios.get(`${process.env.API_URL}/getdanakaget`)
-      .then(({ data }) => {
-        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat. Hadiah dikirim via japri.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err);
-        });
-
-        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat, silahkan klaim hadiah Anda disini ${data.link} \n\nJangan bagikan link ini ke orang lain.`, { chat_id: ctx.message.from.id });
-      })
-      .catch(() => {});
-  }
-});
 
 bot.on('photo', async (ctx) => {
   const photo = ctx.message.photo[2] || ctx.message.photo[1]
@@ -332,7 +312,7 @@ bot.on('photo', async (ctx) => {
   }
 })
 
-bot.hears(/./gi, (ctx) => {
+bot.on('message', (ctx) => {
   if (
     ctx.message.reply_to_message
       &&
@@ -358,13 +338,31 @@ bot.hears(/./gi, (ctx) => {
       &&
     ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
       &&
+    ctx.message.reply_to_message.text === CORE_HOUR_END
+  ) {
+    axios.get(`${process.env.API_URL}/getdanakaget`)
+      .then(({ data }) => {
+        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat. Hadiah dikirim via japri.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          console.log(err);
+        });
+
+        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat, silahkan klaim hadiah Anda disini ${data.link} \n\nJangan bagikan link ini ke orang lain.`, { chat_id: ctx.message.from.id });
+      })
+      .catch(() => {});
+  }
+
+  if (
+    ctx.message.reply_to_message
+      &&
+    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
+      &&
     ctx.message.reply_to_message.text === 'Mau ngirim apa bosque ??'
   ) {
     if (ctx.message.text === CORE_HOUR_END) {
       return ctx.reply('Dilarang shout core hour berakhir !!!', { reply_to_message_id: ctx.message.message_id })
     }
 
-    return ctx.reply(`${ctx.message.text}`, { chat_id: 0 })
+    return ctx.reply(`${ctx.message.text}`, { chat_id: -1001430743348 })
       .then((res) => {
         ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
@@ -396,7 +394,7 @@ bot.hears(/./gi, (ctx) => {
     }
 
     if (decoded > 0) {
-      return bot.telegram.deleteMessage(-320872691, parseInt(decoded)).catch((err) => {
+      return bot.telegram.deleteMessage(-1001430743348, parseInt(decoded)).catch(() => {
         ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
