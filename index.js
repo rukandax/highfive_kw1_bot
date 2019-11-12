@@ -7,6 +7,7 @@ const Telegraf = require('telegraf');
 const Schedule = require('node-schedule')
 const axios = require('axios');
 const puppeteer = require('puppeteer');
+const { encode, decode } = require('jwt-simple');
 
 const {
   greeting
@@ -396,11 +397,11 @@ bot.hears(/./gi, (ctx) => {
 
     return ctx.reply(`${ctx.message.text}`, { chat_id: -1001113266099 })
       .then((res) => {
-        ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${res.message_id}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
 
-        bot.telegram.sendMessage(process.env.CONTROL_AREA, `${res.text}\n\nRemove Command : /deleteshout ${res.message_id}`).catch((err) => {
+        bot.telegram.sendMessage(process.env.CONTROL_AREA, `${res.text}\n\nRemove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
           console.log(err);
         });
       })
@@ -416,7 +417,7 @@ bot.hears(/./gi, (ctx) => {
       &&
     ctx.message.reply_to_message.text === 'Mau hapus yang mana bosque ??'
   ) {
-    return bot.telegram.deleteMessage(-1001113266099, parseInt(ctx.message.text)).catch((err) => {
+    return bot.telegram.deleteMessage(-1001113266099, parseInt(decode(ctx.message.text, process.env.BOT_TOKEN))).catch((err) => {
       console.log(err);
     });
   }
