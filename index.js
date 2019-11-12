@@ -420,38 +420,6 @@ bot.hears(/./gi, (ctx) => {
       console.log(err);
     });
   }
-
-  // if (ctx.message.chat.type === 'group') {
-  //   console.log(ctx.message);
-
-  //   const paramsGroup = {
-  //     chat_id: ctx.message.chat.id,
-  //     name: ctx.message.chat.title,
-  //   };
-
-  //   axios.get(`${process.env.API_URL}/savegroup.php`, { params: paramsGroup })
-  //     .then(() => {})
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
-
-  // const paramsChat = {
-  //   chat_id: ctx.message.chat.id,
-  //   chat_type: ctx.message.chat.type,
-  //   message_id: ctx.message.message_id,
-  //   sender_id: ctx.message.from.id,
-  //   sender_first_name: ctx.message.from.first_name,
-  //   sender_last_name: ctx.message.from.last_name,
-  //   sender_username: ctx.message.from.username,
-  //   text: ctx.message.text,
-  // };
-
-  // axios.get(`${process.env.API_URL}/savechat.php`, { params: paramsChat })
-  //   .then(() => {})
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
 });
 
 bot.launch();
