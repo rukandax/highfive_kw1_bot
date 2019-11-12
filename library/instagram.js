@@ -80,9 +80,9 @@ const findInstagram = async (ctx, target = '') => {
       users.push(`https://www.instagram.com/${links[i]}`);
     }
 
-    users = users.slice(0, 20);
+    users = users.slice(0, 10);
 
-    return ctx.replyWithHTML(`Nemu nih ${users.length} akun\n\n${users.join("\n")}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.replyWithHTML(`Nemu nih..\n\n${users.join("\n")}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
