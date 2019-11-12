@@ -227,7 +227,7 @@ bot.command('beautymeter', (ctx) => {
 })
 
 bot.command('shout', (ctx) => {
-  ctx.replyWithHTML(`Mau ngomong apa bosque ??\n\n${SHOUT_WARNING}`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  ctx.replyWithHTML(`Mau ngomong apa bosque ??`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 })
@@ -268,113 +268,123 @@ bot.command('deleteshout', (ctx) => {
 })
 
 bot.on('photo', async (ctx) => {
-  if (
-    !ctx.message.reply_to_message ||
-    ctx.message.reply_to_message.from.username !== 'highfive_kw1_bot' ||
-    ctx.message.reply_to_message.text !== 'Mana nih foto nya bosque ??'
-  ) {
-    return;
-  }
-
-  ctx.reply('Sebentar ya, aku perhatiin baik-baik dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err);
-  });
-
   const photo = ctx.message.photo[2] || ctx.message.photo[1]
-
+  
   if (!photo) {
     return ctx.reply('Duh mataku kelilipan 😷 coba kirimin lagi gambarnya', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
 
-  const photoLink = await ctx.telegram.getFileLink(photo.file_id)
+  if (
+    ctx.message.reply_to_message
+      &&
+    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
+      &&
+    ctx.message.reply_to_message.text === 'Mana nih foto nya bosque ??'
+  ) {
 
-  let photoExt = photoLink.split('.');
-  photoExt = photoExt[photoExt.length - 1];
+  }
 
-  const photoPath = await axios({
-    url: photoLink,
-    method: 'GET',
-    responseType: 'arraybuffer',
-  }).then(({ data }) => {
-    const outputFilename = `/tmp/highfive_kw1_bot_image.${photoExt}`;
-    fs.writeFileSync(outputFilename, data);
-
-    return outputFilename;
-  });
-
-  const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-  const page = await browser.newPage();
-
-  await page.setRequestInterception(true);
-
-  page.on('request', interceptedRequest => {
-    if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg') || interceptedRequest.url().endsWith('.jpeg') || interceptedRequest.url().endsWith('.css'))
-      interceptedRequest.abort();
-    else
-      interceptedRequest.continue();
-  });
-
-  await page.goto('https://hotness.ai/', {
-    timeout: 3000000
-  });
-
-  const input = await page.$('#imgFile')
-  let score = 0;
-
-  if (input) {
-    await input.uploadFile(photoPath)
-    
-    await page.waitForFunction(
-      'document.querySelector("#hotText").innerText.includes("Your Attractiveness Score is") || document.querySelector("#hotText").innerText.includes("Error")',
-    );
-  
-    score = await page.evaluate(() => {
-      return document.querySelector("#hotText").innerText.replace('Your Attractiveness Score is ', '').replace(' out of 10', '');
-    });
-  } else {
-    const selector = '.onp-sl-social-button-twitter-tweet';
-
-    await page.$(selector)
-    await page.evaluate((selector) => {
-      const button = document.querySelector(selector)
-
-      if (button) {
-        button.click()
-      }
-    }, selector); 
-
-    ctx.reply('Duh mataku kelilipan 😷 coba kirimin lagi gambarnya', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  if (
+    ctx.message.reply_to_message
+      &&
+    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
+      &&
+    ctx.message.reply_to_message.text === 'Mana nih foto nya bosque ??'
+  ) {
+    ctx.reply('Sebentar ya, aku perhatiin baik-baik dulu..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
+  
+    const photoLink = await ctx.telegram.getFileLink(photo.file_id)
+  
+    let photoExt = photoLink.split('.');
+    photoExt = photoExt[photoExt.length - 1];
+  
+    const photoPath = await axios({
+      url: photoLink,
+      method: 'GET',
+      responseType: 'arraybuffer',
+    }).then(({ data }) => {
+      const outputFilename = `/tmp/highfive_kw1_bot_image.${photoExt}`;
+      fs.writeFileSync(outputFilename, data);
+  
+      return outputFilename;
+    });
+  
+    const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    const page = await browser.newPage();
+  
+    await page.setRequestInterception(true);
+  
+    page.on('request', interceptedRequest => {
+      if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg') || interceptedRequest.url().endsWith('.jpeg') || interceptedRequest.url().endsWith('.css'))
+        interceptedRequest.abort();
+      else
+        interceptedRequest.continue();
+    });
+  
+    await page.goto('https://hotness.ai/', {
+      timeout: 3000000
+    });
+  
+    const input = await page.$('#imgFile')
+    let score = 0;
+  
+    if (input) {
+      await input.uploadFile(photoPath)
+      
+      await page.waitForFunction(
+        'document.querySelector("#hotText").innerText.includes("Your Attractiveness Score is") || document.querySelector("#hotText").innerText.includes("Error")',
+      );
+    
+      score = await page.evaluate(() => {
+        return document.querySelector("#hotText").innerText.replace('Your Attractiveness Score is ', '').replace(' out of 10', '');
+      });
+    } else {
+      const selector = '.onp-sl-social-button-twitter-tweet';
+  
+      await page.$(selector)
+      await page.evaluate((selector) => {
+        const button = document.querySelector(selector)
+  
+        if (button) {
+          button.click()
+        }
+      }, selector); 
+  
+      ctx.reply('Duh mataku kelilipan 😷 coba kirimin lagi gambarnya', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err);
+      });
+    }
+  
+    await browser.close();
+  
+    let response = 'Mukanya yang sebelah mana sih ? Gak jelas.. 😒';
+  
+    if (score >= 0) {
+      response = '😨 Ihh.. Jelek.. 😨';
+    }
+  
+    if (score >= 5) {
+      response = 'Hmmm, biasa aja sih 😌 yang kayak gini mah pasaran';
+    }
+  
+    if (score >= 7) {
+      response = 'Lumayan lah.. Masih cocok dibawa-bawa ketemu mantan 😄';
+    }
+  
+    if (score >= 9) {
+      response = 'Kiw.. Kiw.. Bisa kali~~ 😎😍';
+    }
+  
+    if (!isNaN(parseInt(score))) {
+      response = `${response} .. ${parseInt(score)} ini`
+    }
+  
+    return ctx.reply(response, { reply_to_message_id: ctx.message.message_id })
   }
-
-  await browser.close();
-
-  let response = 'Mukanya yang sebelah mana sih ? Gak jelas.. 😒';
-
-  if (score >= 0) {
-    response = '😨 Ihh.. Jelek.. 😨';
-  }
-
-  if (score >= 5) {
-    response = 'Hmmm, biasa aja sih 😌 yang kayak gini mah pasaran';
-  }
-
-  if (score >= 7) {
-    response = 'Lumayan lah.. Masih cocok dibawa-bawa ketemu mantan 😄';
-  }
-
-  if (score >= 9) {
-    response = 'Kiw.. Kiw.. Bisa kali~~ 😎😍';
-  }
-
-  if (!isNaN(parseInt(score))) {
-    response = `${response} .. ${parseInt(score)} ini`
-  }
-
-  return ctx.reply(response, { reply_to_message_id: ctx.message.message_id })
 })
 
 bot.hears(/./gi, (ctx) => {
