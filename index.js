@@ -410,7 +410,7 @@ bot.hears(/./gi, (ctx) => {
 
     return ctx.reply(`${ctx.message.text}`, { chat_id: -1001113266099 })
       .then((res) => {
-        ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>\n\n<i>Perintah /deleteshout menggunakan JWT yang cukup sulit untuk ditebak, jika pesan anda menghilang tanpa sebab, kemungkinan dihapus oleh Admin Grup karena alasan tertentu.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
 
