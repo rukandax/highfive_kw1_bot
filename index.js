@@ -271,7 +271,7 @@ bot.on('photo', async (ctx) => {
   if (
     !ctx.message.reply_to_message ||
     ctx.message.reply_to_message.from.username !== 'highfive_kw1_bot' ||
-    ctx.message.reply_to_message.text === 'Mana nih foto nya bosque ??'
+    ctx.message.reply_to_message.text !== 'Mana nih foto nya bosque ??'
   ) {
     return;
   }
