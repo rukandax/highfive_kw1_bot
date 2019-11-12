@@ -90,48 +90,18 @@ bot.command('instagram', findInstagram);
 bot.command('mostlikedigpost', getMostLikedIgPost);
 
 bot.command('beautymeter', (ctx) => {
-  if (
-    ctx.message.from.username === '@wibisonoajii'
-      ||
-    ctx.message.from.username === 'wibisonoajii'
-  ) {
-    return;
-  }
-
-  ctx.reply('Join our new group https://t.me/joinchat/E_Aj-BMgIPNkx42JuGTi3g', { reply_to_message_id: ctx.message.message_id })
-
   ctx.reply('Mana nih foto nya bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 })
 
 bot.command('shout', (ctx) => {
-  if (
-    ctx.message.from.username === '@wibisonoajii'
-      ||
-    ctx.message.from.username === 'wibisonoajii'
-  ) {
-    return;
-  }
-
-  ctx.reply('Join our new group https://t.me/joinchat/E_Aj-BMgIPNkx42JuGTi3g', { reply_to_message_id: ctx.message.message_id })
-
   ctx.replyWithHTML('Mau ngirim apa bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
   });
 })
 
 bot.command('deleteshout', (ctx) => {
-  if (
-    ctx.message.from.username === '@wibisonoajii'
-      ||
-    ctx.message.from.username === 'wibisonoajii'
-  ) {
-    return;
-  }
-
-  ctx.reply('Join our new group https://t.me/joinchat/E_Aj-BMgIPNkx42JuGTi3g', { reply_to_message_id: ctx.message.message_id })
-
   let text = '';
 
   if (ctx.message.text.includes('/deleteshout@highfive_kw1_bot')) {
@@ -167,14 +137,6 @@ bot.command('deleteshout', (ctx) => {
 })
 
 bot.on('photo', async (ctx) => {
-  if (
-    ctx.message.from.username === '@wibisonoajii'
-      ||
-    ctx.message.from.username === 'wibisonoajii'
-  ) {
-    return;
-  }
-
   const photo = ctx.message.photo[2] || ctx.message.photo[1]
   
   if (!photo) {
@@ -285,14 +247,6 @@ bot.on('photo', async (ctx) => {
 })
 
 bot.hears(/./gi, (ctx) => {
-  if (
-    ctx.message.from.username === '@wibisonoajii'
-      ||
-    ctx.message.from.username === 'wibisonoajii'
-  ) {
-    return;
-  }
-
   if (
     ctx.message.reply_to_message
       &&
