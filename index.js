@@ -246,11 +246,22 @@ bot.command('deleteshout', (ctx) => {
     });
   }
 
-  return bot.telegram.deleteMessage(-1001113266099, parseInt(text)).catch((err) => {
+  let decoded = '';
+  try {
+    decoded = decode(text, process.env.BOT_TOKEN);
+  } catch (_) {
     ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
-  });
+  }
+
+  if (decoded.length) {
+    return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch(() => {
+      ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err);
+      });
+    });
+  }
 })
 
 bot.on('photo', async (ctx) => {
@@ -420,14 +431,14 @@ bot.hears(/./gi, (ctx) => {
     let decoded = '';
     try {
       decoded = decode(ctx.message.text, process.env.BOT_TOKEN);
-    } catch (err) {
+    } catch (_) {
       ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
         console.log(err);
       });
     }
 
     if (decoded.length) {
-      return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch((err) => {
+      return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch(() => {
         ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
