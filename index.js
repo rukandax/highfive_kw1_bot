@@ -417,9 +417,22 @@ bot.hears(/./gi, (ctx) => {
       &&
     ctx.message.reply_to_message.text === 'Mau hapus yang mana bosque ??'
   ) {
-    return bot.telegram.deleteMessage(-1001113266099, parseInt(decode(ctx.message.text, process.env.BOT_TOKEN))).catch((err) => {
-      console.log(err);
-    });
+    let decoded = '';
+    try {
+      decoded = decode(ctx.message.text, process.env.BOT_TOKEN);
+    } catch (err) {
+      ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err);
+      });
+    }
+
+    if (decoded.length) {
+      return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch((err) => {
+        ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          console.log(err);
+        });
+      });
+    }
   }
 });
 
