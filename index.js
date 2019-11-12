@@ -250,17 +250,19 @@ bot.command('deleteshout', (ctx) => {
   try {
     decoded = decode(text, process.env.BOT_TOKEN);
   } catch (_) {
-    ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
 
-  if (decoded.length) {
-    return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch(() => {
-      ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+  if (decoded > 0) {
+    return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch((err) => {
+      ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
         console.log(err);
       });
     });
+  } else {
+    console.log(decoded);
   }
 })
 
@@ -432,17 +434,19 @@ bot.hears(/./gi, (ctx) => {
     try {
       decoded = decode(ctx.message.text, process.env.BOT_TOKEN);
     } catch (_) {
-      ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
         console.log(err);
       });
     }
 
-    if (decoded.length) {
-      return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch(() => {
+    if (decoded > 0) {
+      return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch((err) => {
         ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
       });
+    } else {
+      console.log(decoded);
     }
   }
 });
