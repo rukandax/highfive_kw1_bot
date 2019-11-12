@@ -441,7 +441,7 @@ bot.hears(/./gi, (ctx) => {
 
     if (decoded > 0) {
       return bot.telegram.deleteMessage(-1001113266099, parseInt(decoded)).catch((err) => {
-        ctx.reply('Pesan yang mau dihapus tidak ditemukan', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err);
         });
       });
