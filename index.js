@@ -202,6 +202,26 @@ bot.command('deleteshout', (ctx) => {
   }
 })
 
+bot.on('message', (ctx) => {
+  if (
+    ctx.message.reply_to_message
+      &&
+    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
+      &&
+    ctx.message.reply_to_message.text === CORE_HOUR_END
+  ) {
+    axios.get(`${process.env.API_URL}/getdanakaget`)
+      .then(({ data }) => {
+        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat. Hadiah dikirim via japri.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          console.log(err);
+        });
+
+        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat, silahkan klaim hadiah Anda disini ${data.link} \n\nJangan bagikan link ini ke orang lain.`, { chat_id: ctx.message.from.id });
+      })
+      .catch(() => {});
+  }
+});
+
 bot.on('photo', async (ctx) => {
   const photo = ctx.message.photo[2] || ctx.message.photo[1]
   
@@ -331,24 +351,6 @@ bot.hears(/./gi, (ctx) => {
     ctx.message.reply_to_message.text === 'Username instagram nya siapa ?'
   ) {
     getMostLikedIgPost(ctx, ctx.message.text);
-  }
-
-  if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
-    ctx.message.reply_to_message.text === CORE_HOUR_END
-  ) {
-    axios.get(`${process.env.API_URL}/getdanakaget`)
-      .then(({ data }) => {
-        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat. Hadiah dikirim via japri.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err);
-        });
-
-        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat, silahkan klaim hadiah Anda disini ${data.link} \n\nJangan bagikan link ini ke orang lain.`, { chat_id: ctx.message.from.id });
-      })
-      .catch(() => {});
   }
 
   if (
