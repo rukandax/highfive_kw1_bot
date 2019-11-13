@@ -106,7 +106,7 @@ bot.command('givedanakaget', (ctx) => {
 
   axios.post(`${process.env.API_URL}/savedanakaget`, { link })
     .then(({ data }) => {
-      ctx.replyWithHTML(`Berhasil menambah DANA KAGET\n\nGunakan perintah <code>/deletedanakaget ${encode(data.id, process.env.BOT_TOKEN)}</code> untuk menghapus link DANA KAGET yang telah dikirim.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      ctx.replyWithHTML(`Berhasil menambah DANA KAGET untuk tanggal ${ data.date }\n\nGunakan perintah <code>/deletedanakaget ${encode(data.id, process.env.BOT_TOKEN)}</code> untuk menghapus link DANA KAGET yang telah dikirim.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
         console.log(err);
       });
     })
@@ -360,6 +360,28 @@ bot.on('message', (ctx) => {
   ) {
     if (ctx.message.text === CORE_HOUR_END) {
       return ctx.reply('Dilarang shout core hour berakhir !!!', { reply_to_message_id: ctx.message.message_id })
+    }
+
+    if (ctx.message.animation) {
+      return ctx.replyWithAnimation(ctx.message.animation.file_id, { chat_id: -1001430743348 })
+        .then((res) => {
+          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+            console.log(err);
+          });
+
+          bot.telegram.sendAnimation(process.env.CONTROL_AREA, ctx.message.animation.file_id)
+            .then(() => {
+              bot.telegram.sendMessage(process.env.CONTROL_AREA, `Remove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
+                console.log(err);
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
 
     return ctx.reply(`${ctx.message.text}`, { chat_id: -1001430743348 })
