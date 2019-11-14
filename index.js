@@ -384,6 +384,28 @@ bot.on('message', (ctx) => {
         });
     }
 
+    if (ctx.message.sticker) {
+      return ctx.replyWithSticker(ctx.message.sticker.file_id, { chat_id: -1001430743348 })
+        .then((res) => {
+          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+            console.log(err);
+          });
+
+          bot.telegram.sendSticker(process.env.CONTROL_AREA, ctx.message.sticker.file_id)
+            .then(() => {
+              bot.telegram.sendMessage(process.env.CONTROL_AREA, `Remove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
+                console.log(err);
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     if (ctx.message.text) {
       return ctx.reply(`${ctx.message.text}`, { chat_id: -1001430743348 })
         .then((res) => {
