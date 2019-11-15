@@ -339,6 +339,8 @@ bot.on('message', (ctx) => {
     ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
       &&
     ctx.message.reply_to_message.text === CORE_HOUR_END
+      &&
+    ctx.message.animation
   ) {
     axios.get(`${process.env.API_URL}/getdanakaget`)
       .then(({ data }) => {
