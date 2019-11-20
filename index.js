@@ -89,72 +89,6 @@ bot.command('help', greeting);
 bot.command('instagram', findInstagram);
 bot.command('mostlikedigpost', getMostLikedIgPost);
 
-bot.command('givedanakaget', (ctx) => {
-  let link = '';
-
-  if (ctx.message.text.includes('/givedanakaget@highfive_kw1_bot')) {
-    link = ctx.message.text.replace('/givedanakaget@highfive_kw1_bot', '').trim();
-  } else {
-    link = ctx.message.text.replace('/givedanakaget', '').trim();
-  }
-
-  if (!link.length) {
-    return ctx.reply('Mana nih link nya ?', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
-  }
-
-  axios.post(`${process.env.API_URL}/savedanakaget`, { link })
-    .then(({ data }) => {
-      ctx.replyWithHTML(`Berhasil menambah DANA KAGET untuk tanggal ${ data.date }\n\nGunakan perintah <code>/deletedanakaget ${encode(data.id, process.env.BOT_TOKEN)}</code> untuk menghapus link DANA KAGET yang telah dikirim.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err);
-      });
-    })
-    .catch(() => {
-      ctx.reply('Gagal menyimpan DANA KAGET, mungkin link yang sama sudah tersimpan atau service sedang down.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err);
-      });
-    });
-});
-
-bot.command('deletedanakaget', (ctx) => {
-  let id = '';
-
-  if (ctx.message.text.includes('/deletedanakaget@highfive_kw1_bot')) {
-    id = ctx.message.text.replace('/deletedanakaget@highfive_kw1_bot', '').trim();
-  } else {
-    id = ctx.message.text.replace('/deletedanakaget', '').trim();
-  }
-
-  if (!id.length) {
-    return ctx.reply('Mana nih ID nya ?', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
-  }
-
-  let decoded = '';
-
-  try {
-    decoded = decode(id, process.env.BOT_TOKEN);
-  } catch (_) {
-    ctx.reply('Gagal menghapus DANA KAGET, ID tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
-  }
-
-  axios.get(`${process.env.API_URL}/removedanakaget`, { params: { id: decoded } })
-    .then((res) => {
-      ctx.replyWithHTML(`Berhasil menghapus DANA KAGET.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err);
-      });
-    })
-    .catch(() => {
-      ctx.reply('Gagal menghapus DANA KAGET, mungkin data sudah terhapus atau service sedang down.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err);
-      });
-    });
-});
-
 bot.command('beautymeter', (ctx) => {
   ctx.reply('Mana nih foto nya bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err);
@@ -177,7 +111,7 @@ bot.command('deleteshout', (ctx) => {
   }
 
   if (!text.length) {
-    return ctx.reply('Mau hapus yang mana bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+    return ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT masih kosong.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
   }
@@ -338,26 +272,6 @@ bot.on('message', (ctx) => {
       &&
     ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
       &&
-    ctx.message.reply_to_message.text === CORE_HOUR_END
-      &&
-    ctx.message.animation
-  ) {
-    axios.get(`${process.env.API_URL}/getdanakaget`)
-      .then(({ data }) => {
-        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat. Hadiah dikirim via japri.`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err);
-        });
-
-        ctx.replyWithHTML(`Selamat Anda terpilih menjadi replier tercepat, silahkan klaim hadiah Anda disini ${data.link} \n\nJangan bagikan link ini ke orang lain.`, { chat_id: ctx.message.from.id });
-      })
-      .catch(() => {});
-  }
-
-  if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
     ctx.message.reply_to_message.text === 'Mau ngirim apa bosque ??'
   ) {
     if (ctx.message.text === CORE_HOUR_END) {
@@ -425,33 +339,6 @@ bot.on('message', (ctx) => {
     }
 
     return ctx.reply('Format belum didukung untuk shout', { reply_to_message_id: ctx.message.message_id });
-  }
-
-  if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
-    ctx.message.reply_to_message.text === 'Mau hapus yang mana bosque ??'
-  ) {
-    let decoded = '';
-    try {
-      decoded = decode(ctx.message.text, process.env.BOT_TOKEN);
-    } catch (_) {
-      ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err);
-      });
-    }
-
-    if (decoded > 0) {
-      return bot.telegram.deleteMessage(-1001430743348, parseInt(decoded)).catch(() => {
-        ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err);
-        });
-      });
-    } else {
-      console.log(decoded);
-    }
   }
 });
 
