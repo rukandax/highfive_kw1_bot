@@ -136,7 +136,7 @@ bot.command('deleteshout', (ctx) => {
   }
 })
 
-bot.on('voice', (ctx) => {
+bot.on('voice', async (ctx) => {
   console.log(ctx.message)
 
   if (ctx.message.voice && ctx.message.chat.type === 'private') {
