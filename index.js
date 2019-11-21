@@ -177,7 +177,7 @@ bot.on('voice', async (ctx) => {
     })
 
     await page.goto('https://www.audiospeedchanger.com/', {
-      timeout: 6000000
+      timeout: 3000000
     })
   
     const inputVoice = await page.$('#localfile')
@@ -187,9 +187,9 @@ bot.on('voice', async (ctx) => {
     await page.select('#audiomethod', '2')
     await page.$eval('#btnUpload', el => el.click())
 
-    await page.waitForFunction(
-      'document.querySelector(".alert.alert-success a") !== null',
-    )
+    await page.waitForSelector('.alert.alert-success a' , {
+      timeout: 6000000
+    })
 
     const link = await page.evaluate(() => {
       return document.querySelector(".alert.alert-success a").getAttribute('href')
