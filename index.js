@@ -189,7 +189,7 @@ bot.on('voice', async (ctx) => {
       await page.$eval('#btnUpload', el => el.click())
 
       await page.waitForSelector('.alert.alert-success a' , {
-        timeout: 60000
+        timeout: 30000
       })
 
       const link = await page.evaluate(() => {
