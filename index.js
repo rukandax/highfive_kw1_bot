@@ -197,13 +197,13 @@ bot.on('voice', async (ctx) => {
 
     await browser.close()
 
-    ctx.replyWithAudio(link, { chat_id: -1001430743348 })
+    ctx.replyWithVoice(link, { chat_id: -1001430743348 })
       .then((res) => {
         ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err)
         })
 
-        bot.telegram.sendAudio(process.env.CONTROL_AREA, link)
+        bot.telegram.sendVoice(process.env.CONTROL_AREA, link)
           .then(() => {
             bot.telegram.sendMessage(process.env.CONTROL_AREA, `Remove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
               console.log(err)
