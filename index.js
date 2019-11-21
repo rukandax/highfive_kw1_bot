@@ -142,86 +142,94 @@ bot.on('voice', async (ctx) => {
       console.log(err)
     })
 
-    const voiceLink = await ctx.telegram.getFileLink(ctx.message.voice.file_id)
+    try {
+      const voiceLink = await ctx.telegram.getFileLink(ctx.message.voice.file_id)
 
-    let voiceExt = voiceLink.split('.')
-    voiceExt = voiceExt[voiceExt.length - 1]
-  
-    const voicePath = await axios({
-      url: voiceLink,
-      method: 'GET',
-      responseType: 'arraybuffer',
-    }).then(({ data }) => {
-      const outputFilename = `/tmp/highfive_kw1_bot_voice-${Date.now()}.${voiceExt}`
-      fs.writeFileSync(outputFilename, data)
-  
-      return outputFilename
-    })
+      let voiceExt = voiceLink.split('.')
+      voiceExt = voiceExt[voiceExt.length - 1]
+    
+      const voicePath = await axios({
+        url: voiceLink,
+        method: 'GET',
+        responseType: 'arraybuffer',
+      }).then(({ data }) => {
+        const outputFilename = `/tmp/highfive_kw1_bot_voice-${Date.now()}.${voiceExt}`
+        fs.writeFileSync(outputFilename, data)
+    
+        return outputFilename
+      })
 
-    const browser = await puppeteer.launch({
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-      ],
-      headless: true,
-    })
-    const page = await browser.newPage()
-  
-    await page.setRequestInterception(true)
-  
-    page.on('request', interceptedRequest => {
-      if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg') || interceptedRequest.url().endsWith('.jpeg') || interceptedRequest.url().endsWith('.css'))
-        interceptedRequest.abort()
-      else
-        interceptedRequest.continue()
-    })
+      const browser = await puppeteer.launch({
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
+        headless: true,
+      })
+      const page = await browser.newPage()
+    
+      await page.setRequestInterception(true)
+    
+      page.on('request', interceptedRequest => {
+        if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg') || interceptedRequest.url().endsWith('.jpeg') || interceptedRequest.url().endsWith('.css'))
+          interceptedRequest.abort()
+        else
+          interceptedRequest.continue()
+      })
 
-    await page.goto('https://www.audiospeedchanger.com/', {
-      timeout: 3000000
-    })
-  
-    const inputVoice = await page.$('#localfile')
-    await inputVoice.uploadFile(voicePath)
+      await page.goto('https://www.audiospeedchanger.com/', {
+        timeout: 30000
+      })
+    
+      const inputVoice = await page.$('#localfile')
+      await inputVoice.uploadFile(voicePath)
 
-    await page.$eval('#pitch', el => el.value = 8)
-    await page.select('#audiomethod', '2')
-    await page.$eval('#btnUpload', el => el.click())
+      await page.$eval('#pitch', el => el.value = 8)
+      await page.select('#audiomethod', '2')
+      await page.$eval('#btnUpload', el => el.click())
 
-    await page.waitForSelector('.alert.alert-success a' , {
-      timeout: 6000000
-    })
+      await page.waitForSelector('.alert.alert-success a' , {
+        timeout: 60000
+      })
 
-    const link = await page.evaluate(() => {
-      return document.querySelector(".alert.alert-success a").getAttribute('href')
-    })
+      const link = await page.evaluate(() => {
+        return document.querySelector(".alert.alert-success a").getAttribute('href')
+      })
 
-    await browser.close()
+      await browser.close()
 
-    ctx.replyWithVoice(link, { chat_id: -1001430743348 })
-      .then((res) => {
-        ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      ctx.replyWithVoice(link, { chat_id: -1001430743348 })
+        .then((res) => {
+          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+            console.log(err)
+          })
+
+          bot.telegram.sendVoice(process.env.CONTROL_AREA, link)
+            .then(() => {
+              bot.telegram.sendMessage(process.env.CONTROL_AREA, `Remove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
+                console.log(err)
+              })
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        })
+        .catch((err) => {
           console.log(err)
         })
 
-        bot.telegram.sendVoice(process.env.CONTROL_AREA, link)
-          .then(() => {
-            bot.telegram.sendMessage(process.env.CONTROL_AREA, `Remove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
-              console.log(err)
-            })
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-      })
-      .catch((err) => {
+      return ctx.reply('Suara mu lagi diupload, nanti dikabarin lagi kalo udah selesai', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err)
+      }).catch((err) => {
         console.log(err)
       })
-
-    return ctx.reply('Suara mu lagi diupload, nanti dikabarin lagi kalo udah selesai', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    }).catch((err) => {
-      console.log(err)
-    })
+    } catch (err) {
+      return ctx.reply('Duh maap, error nih...', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
   }
 })
 
@@ -280,7 +288,7 @@ bot.on('photo', async (ctx) => {
     })
   
     await page.goto('https://hotness.ai/', {
-      timeout: 3000000
+      timeout: 30000
     })
   
     const input = await page.$('#imgFile')
