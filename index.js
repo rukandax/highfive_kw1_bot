@@ -55,34 +55,34 @@ Schedule.scheduleJob('endCoreHour', '0 17 * * 1-5', () => {
   })
 })
 
-let isWebDown = false
-Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
-  const message = 'Bukalapak down ya ?'
+// let isWebDown = false
+// Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
+//   const message = 'Bukalapak down ya ?'
 
-  axios.get('https://www.bukalapak.com/version.txt')
-    .then(({ data }) => {
-      if (data.trim().length === 40) {
-        isWebDown = false
-      } else {
-        if (!isWebDown) {
-          isWebDown = true
+//   axios.get('https://www.bukalapak.com/version.txt')
+//     .then(({ data }) => {
+//       if (data.trim().length === 40) {
+//         isWebDown = false
+//       } else {
+//         if (!isWebDown) {
+//           isWebDown = true
   
-          bot.telegram.sendMessage(-1001430743348, message).catch((err) => {
-            console.log(err)
-          })
-        }
-      }
-    })
-    .catch(() => {
-      if (!isWebDown) {
-        isWebDown = true
+//           bot.telegram.sendMessage(-1001430743348, message).catch((err) => {
+//             console.log(err)
+//           })
+//         }
+//       }
+//     })
+//     .catch(() => {
+//       if (!isWebDown) {
+//         isWebDown = true
 
-        bot.telegram.sendMessage(-1001430743348, message).catch((err) => {
-          console.log(err)
-        })
-      }
-    })
-})
+//         bot.telegram.sendMessage(-1001430743348, message).catch((err) => {
+//           console.log(err)
+//         })
+//       }
+//     })
+// })
 
 bot.start(greeting)
 bot.command('help', greeting)
@@ -137,8 +137,6 @@ bot.command('deleteshout', (ctx) => {
 })
 
 bot.on('voice', async (ctx) => {
-  console.log(ctx.message)
-
   if (ctx.message.voice && ctx.message.chat.type === 'private') {
     ctx.reply('Sebentar ya..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err)
@@ -179,7 +177,7 @@ bot.on('voice', async (ctx) => {
     })
 
     await page.goto('https://www.audiospeedchanger.com/', {
-      timeout: 3000000
+      timeout: 6000000
     })
   
     const inputVoice = await page.$('#localfile')
