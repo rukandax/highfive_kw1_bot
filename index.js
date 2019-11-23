@@ -350,6 +350,14 @@ bot.on('photo', async (ctx) => {
 })
 
 bot.on('message', (ctx) => {
+  if (ctx.message.text) {
+    ctx.message.text.trim()
+    
+    while (ctx.message.text.includes('  ')) {
+      ctx.message.text = ctx.message.text.replace('  ', ' ')
+    }
+  }
+
   if (
     ctx.message.reply_to_message
       &&
@@ -370,6 +378,8 @@ bot.on('message', (ctx) => {
     getMostLikedIgPost(ctx, ctx.message.text)
   }
 
+  const blacklistKeyword = JSON.parse(process.env.BLACKLISTED_KEYWORD)
+
   if (
     ctx.message.reply_to_message
       &&
@@ -377,8 +387,38 @@ bot.on('message', (ctx) => {
       &&
     ctx.message.reply_to_message.text === 'Mau ngirim apa bosque ??'
   ) {
-    if (ctx.message.text === CORE_HOUR_END) {
-      return ctx.reply('Dilarang shout core hour berakhir !!!', { reply_to_message_id: ctx.message.message_id })
+    let containBlacklistKeyword = false
+
+    blacklistKeyword.forEach((keyword) => {
+      if (ctx.message.text && ctx.message.text.toLowerCase().includes(keyword)) {
+        containBlacklistKeyword = true
+      }
+    })
+
+    if (ctx.message.text && ctx.message.text.toLowerCase().includes('try to shout blacklisted message')) {
+      return ctx.reply(`@${ctx.message.from.username} (${ctx.message.from.first_name} ${ctx.message.from.last_name}) try to framing someone with blacklisted message`, { chat_id: -1001430743348 }).catch((err) => {
+        console.log(err)
+      })
+    }
+
+    if (containBlacklistKeyword) {
+      ctx.reply(`@${ctx.message.from.username} (${ctx.message.from.first_name} ${ctx.message.from.last_name}) try to shout blacklisted message`, { chat_id: -1001430743348 }).catch((err) => {
+        console.log(err)
+      })
+
+      return ctx.reply('Dilarang shout kalimat ini !!!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err)
+      })
+    }
+
+    if (
+      ctx.message.text === CORE_HOUR_END
+        ||
+      ctx.message.text.toLowerCase().includes('try to framing someone with blacklisted message')
+    ) {
+      return ctx.reply('Dilarang shout kalimat ini !!!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err)
+      })
     }
 
     if (ctx.message.animation) {
