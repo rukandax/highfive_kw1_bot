@@ -60,6 +60,7 @@ async function getMostLikedIgPost(ctx, target = '') {
       console.log(err);
     });
   } catch (err) {
+    console.log(err)
     ctx.reply('Gak ketemu nih, mungkin akun nya di private..', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err);
     });
