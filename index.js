@@ -5,10 +5,10 @@ require('dotenv').config()
 const Telegraf = require('telegraf')
 const Schedule = require('node-schedule')
 const axios = require('axios')
-const jwt = require('jsonwebtoken')
 
 const {
-  shout
+  shout,
+  deleteshout
 } = require('./library/shout')
 
 const {
@@ -91,45 +91,7 @@ bot.command('help', greeting)
 bot.command('instagram', findInstagram)
 bot.command('mostlikedigpost', getMostLikedIgPost)
 bot.command('shout', shout)
-
-bot.command('deleteshout', async (ctx) => {
-  let text = ''
-
-  if (ctx.message.text.includes('/deleteshout@highfive_kw1_bot')) {
-    text = ctx.message.text.replace('/deleteshout@highfive_kw1_bot', '').trim()
-  } else {
-    text = ctx.message.text.replace('/deleteshout', '').trim()
-  }
-
-  if (!text.length) {
-    return ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT masih kosong.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
-  }
-
-  let decoded = ''
-  try {
-    decoded = await jwt.verify(text, process.env.BOT_TOKEN, (_, payload) => payload)
-  } catch (err) {
-    ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
-  }
-
-  if (decoded.length) {
-    return bot.telegram.deleteMessage(process.env.TELEGRAM_GROUP, parseInt(decoded))
-      .then(() => {
-        ctx.reply('Berhasil menghapus pesan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err)
-        })
-      })
-      .catch(() => {
-        ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err)
-        })
-      })
-  }
-})
+bot.command('deleteshout', deleteshout)
 
 bot.command('paymentsuccess', (ctx) => {
   let messageId = '';
@@ -199,20 +161,14 @@ bot.on('message', (ctx) => {
     }
   }
 
-  if (ctx.message.chat.type !== 'private') {
-    ctx.replyWithHTML(`Other Payload : <code>${JSON.stringify(ctx.message)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
+  if (ctx.message.chat.type === 'private' && ctx.message.text && ctx.message.forward_from && ctx.message.forward_from.username === 'highfive_kw1_bot') {
+    ctx.replyWithHTML(`<b>Apa anda ingin mengetahui siapa pengirim pesan ini ?</b>\n\nLakukan pembayaran senilai <b>Rp 50.${ctx.message.message_id.toString().substr(ctx.message.message_id.toString().length - 3)}</b> ke:\n\nCIMB Niaga : <code>230950000000001610</code>\nBCA : <code>103005000000001610</code>\nBank Permata : <code>8330500000001610</code>\nBNI : <code>8255500000001609</code>\nBRI : <code>100535000000001609</code>\nBank Mandiri : <code>8932550000001609</code>\n\n----\n\nLalu kirim perintah <code>/paymentsuccess ${ctx.message.message_id}</code> setelah melakukan pembayaran`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err)
     })
-  } else {
-    if (ctx.message.text && ctx.message.forward_from && ctx.message.forward_from.username === 'highfive_kw1_bot') {
-      ctx.replyWithHTML(`<b>Apa anda ingin mengetahui siapa pengirim pesan ini ?</b>\n\nLakukan pembayaran senilai <b>Rp 50.${ctx.message.message_id.toString().substr(ctx.message.message_id.toString().length - 3)}</b> ke:\n\nCIMB Niaga : <code>230950000000001610</code>\nBCA : <code>103005000000001610</code>\nBank Permata : <code>8330500000001610</code>\nBNI : <code>8255500000001609</code>\nBRI : <code>100535000000001609</code>\nBank Mandiri : <code>8932550000001609</code>\n\n----\n\nLalu kirim perintah <code>/paymentsuccess ${ctx.message.message_id}</code> setelah melakukan pembayaran`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err)
-      })
 
-      ctx.replyWithHTML(`@${ctx.message.from.username} (${ctx.message.chat.id}) mencoba membuka pesan dengan teks <code>${ctx.message.text}</code> dan message_id <code>${ctx.message.message_id}</code>`, { chat_id: process.env.CONTROL_PERSON }).catch((err) => {
-        console.log(err)
-      })
-    }
+    ctx.replyWithHTML(`@${ctx.message.from.username} (${ctx.message.chat.id}) mencoba membuka pesan dengan teks <code>${ctx.message.text}</code> dan message_id <code>${ctx.message.message_id}</code>`, { chat_id: process.env.CONTROL_PERSON }).catch((err) => {
+      console.log(err)
+    })
   }
 
   if (

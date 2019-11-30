@@ -84,6 +84,46 @@ function shout(ctx) {
   return ctx.reply('Format belum didukung untuk shout', { reply_to_message_id: ctx.message.message_id })
 }
 
+async function deleteshout(ctx) {
+  let text = ''
+
+  if (ctx.message.text.includes('/deleteshout@highfive_kw1_bot')) {
+    text = ctx.message.text.replace('/deleteshout@highfive_kw1_bot', '').trim()
+  } else {
+    text = ctx.message.text.replace('/deleteshout', '').trim()
+  }
+
+  if (!text.length) {
+    return ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT masih kosong.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  let decoded = ''
+  try {
+    decoded = await jwt.verify(text, process.env.BOT_TOKEN, (_, payload) => payload)
+  } catch (err) {
+    ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  if (decoded.length) {
+    return bot.telegram.deleteMessage(process.env.TELEGRAM_GROUP, parseInt(decoded))
+      .then(() => {
+        ctx.reply('Berhasil menghapus pesan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          console.log(err)
+        })
+      })
+      .catch(() => {
+        ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          console.log(err)
+        })
+      })
+  }
+}
+
 module.exports = {
   shout,
+  deleteshout,
 }
