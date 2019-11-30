@@ -5,7 +5,7 @@ require('dotenv').config()
 const Telegraf = require('telegraf')
 const Schedule = require('node-schedule')
 const axios = require('axios')
-const { encode, decode } = require('jwt-simple')
+const jwt = require('jsonwebtoken')
 
 const {
   greeting
@@ -87,19 +87,13 @@ bot.command('help', greeting)
 bot.command('instagram', findInstagram)
 bot.command('mostlikedigpost', getMostLikedIgPost)
 
-bot.command('beautymeter', (ctx) => {
-  ctx.reply('Mana nih foto nya bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err)
-  })
-})
-
 bot.command('shout', (ctx) => {
   ctx.replyWithHTML('Mau ngirim apa bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
     console.log(err)
   })
 })
 
-bot.command('deleteshout', (ctx) => {
+bot.command('deleteshout', async (ctx) => {
   let text = ''
 
   if (ctx.message.text.includes('/deleteshout@highfive_kw1_bot')) {
@@ -116,19 +110,25 @@ bot.command('deleteshout', (ctx) => {
 
   let decoded = ''
   try {
-    decoded = decode(text, process.env.BOT_TOKEN)
-  } catch (_) {
+    decoded = await jwt.verify(text, process.env.BOT_TOKEN, (_, payload) => payload)
+  } catch (err) {
     ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
       console.log(err)
     })
   }
 
   if (decoded.length) {
-    return bot.telegram.deleteMessage(process.env.TELEGRAM_GROUP, parseInt(decoded)).catch(() => {
-      ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err)
+    return bot.telegram.deleteMessage(process.env.TELEGRAM_GROUP, parseInt(decoded))
+      .then(() => {
+        ctx.reply('Berhasil menghapus pesan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          console.log(err)
+        })
       })
-    })
+      .catch(() => {
+        ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          console.log(err)
+        })
+      })
   }
 })
 
@@ -177,13 +177,13 @@ bot.on('message', (ctx) => {
     if (ctx.message.animation) {
       return ctx.replyWithAnimation(ctx.message.animation.file_id, { chat_id: process.env.TELEGRAM_GROUP })
         .then((res) => {
-          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
             console.log(err)
           })
 
-          bot.telegram.sendAnimation(process.env.CONTROL_AREA, ctx.message.animation.file_id)
+          ctx.replyWithAnimation(ctx.message.animation.file_id, { chat_id: process.env.CONTROL_AREA })
             .then(() => {
-              bot.telegram.sendMessage(process.env.CONTROL_AREA, `Remove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
+              ctx.replyWithHTML(`Payload : <code>${jwt.sign(ctx.message, process.env.BOT_TOKEN)}</code>\n\nRemove Command : <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
                 console.log(err)
               })
             })
@@ -199,13 +199,13 @@ bot.on('message', (ctx) => {
     if (ctx.message.sticker) {
       return ctx.replyWithSticker(ctx.message.sticker.file_id, { chat_id: process.env.TELEGRAM_GROUP })
         .then((res) => {
-          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
             console.log(err)
           })
 
           bot.telegram.sendSticker(process.env.CONTROL_AREA, ctx.message.sticker.file_id)
             .then(() => {
-              bot.telegram.sendMessage(process.env.CONTROL_AREA, `Remove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
+              ctx.replyWithHTML(`Payload : <code>${jwt.sign(ctx.message, process.env.BOT_TOKEN)}</code>\n\nRemove Command : <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
                 console.log(err)
               })
             })
@@ -221,11 +221,11 @@ bot.on('message', (ctx) => {
     if (ctx.message.text) {
       return ctx.reply(`${ctx.message.text}`, { chat_id: process.env.TELEGRAM_GROUP })
         .then((res) => {
-          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
             console.log(err)
           })
-  
-          bot.telegram.sendMessage(process.env.CONTROL_AREA, `${res.text}\n\nRemove Command : /deleteshout ${encode(res.message_id, process.env.BOT_TOKEN)}`).catch((err) => {
+
+          ctx.replyWithHTML(`Payload : <code>${jwt.sign(ctx.message, process.env.BOT_TOKEN)}</code>\n\nRemove Command : <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
             console.log(err)
           })
         })
