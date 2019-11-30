@@ -1,8 +1,8 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const findInstagram = async (ctx, target = '') => {
-  let name = target;
+const findInstagram = async (ctx) => {
+  let name = '';
 
   if (ctx.message.text.includes('/instagram@highfive_kw1_bot')) {
     name = ctx.message.text.replace('/instagram@highfive_kw1_bot', '').trim();
@@ -16,26 +16,6 @@ const findInstagram = async (ctx, target = '') => {
 
       if (ctx.message.reply_to_message.from.last_name) {
         name += ` ${ctx.message.reply_to_message.from.last_name}`;
-      }
-
-      if (ctx.message.reply_to_message.from.is_bot) {
-        return ctx.replyWithHTML('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err);
-        });
-      }
-    
-      if (ctx.message.reply_to_message.forward_from) {
-        name = ctx.message.reply_to_message.forward_from.first_name;
-
-        if (ctx.message.reply_to_message.forward_from.last_name) {
-          name += ` ${ctx.message.reply_to_message.forward_from.last_name}`;
-        }
-
-        if (ctx.message.reply_to_message.forward_from.is_bot) {
-          return ctx.replyWithHTML('Nice try.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-            console.log(err);
-          });
-        }
       }
     }
   }

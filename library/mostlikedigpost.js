@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
-async function getMostLikedIgPost(ctx, target = '') {
-  let username = target;
+async function getMostLikedIgPost(ctx) {
+  let username = '';
 
   if (ctx.message.text.includes('/mostlikedigpost@highfive_kw1_bot')) {
     username = ctx.message.text.replace('/mostlikedigpost@highfive_kw1_bot', '').trim();

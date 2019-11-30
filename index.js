@@ -8,6 +8,10 @@ const axios = require('axios')
 const jwt = require('jsonwebtoken')
 
 const {
+  shout
+} = require('./library/shout')
+
+const {
   greeting
 } = require('./library/general')
 
@@ -86,12 +90,7 @@ bot.start(greeting)
 bot.command('help', greeting)
 bot.command('instagram', findInstagram)
 bot.command('mostlikedigpost', getMostLikedIgPost)
-
-bot.command('shout', (ctx) => {
-  ctx.replyWithHTML('Mau ngirim apa bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-    console.log(err)
-  })
-})
+bot.command('shout', shout)
 
 bot.command('deleteshout', async (ctx) => {
   let text = ''
@@ -132,12 +131,87 @@ bot.command('deleteshout', async (ctx) => {
   }
 })
 
+bot.command('paymentsuccess', (ctx) => {
+  let messageId = '';
+
+  if (ctx.message.text.includes('/paymentsuccess@highfive_kw1_bot')) {
+    messageId = ctx.message.text.replace('/paymentsuccess@highfive_kw1_bot', '').trim();
+  } else {
+    messageId = ctx.message.text.replace('/paymentsuccess', '').trim();
+  }
+
+  if (messageId.length <= 0) {
+    return ctx.replyWithHTML('Message ID tidak boleh kosong', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  return ctx.replyWithHTML(`@${ctx.message.from.username} (${ctx.message.chat.id}) melakukan konfirmasi pembayaran dengan message_id <code>${messageId}</code>`, { chat_id: process.env.CONTROL_PERSON }).catch((err) => {
+    console.log(err)
+  })
+})
+
+bot.command('directshout', (ctx) => {
+  if (ctx.message.from.id.toString() !== process.env.CONTROL_PERSON) {
+    return ctx.reply('Anda tidak di izinkan menggunakan perintah ini !!!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  let text = '';
+
+  if (ctx.message.text.includes('/directshout@highfive_kw1_bot')) {
+    text = ctx.message.text.replace('/directshout@highfive_kw1_bot', '').trim();
+  } else {
+    text = ctx.message.text.replace('/directshout', '').trim();
+  }
+
+  if (text.length <= 0) {
+    return ctx.replyWithHTML('Text tidak boleh kosong', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  const chatId = text.split(' ')[0]
+  const username = text.split(' ')[1]
+
+  if (chatId && username) {
+    ctx.reply(`@${username}`, { chat_id: chatId }).catch((err) => {
+      console.log(err)
+    })
+  
+    return ctx.reply('Berhasil !!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err)
+    })
+  } else {
+    return ctx.reply('Gagal !!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+      console.log(err)
+    })
+  }
+})
+
 bot.on('message', (ctx) => {
   if (ctx.message.text) {
     ctx.message.text.trim()
     
     while (ctx.message.text.includes('  ')) {
       ctx.message.text = ctx.message.text.replace('  ', ' ')
+    }
+  }
+
+  if (ctx.message.chat.type !== 'private') {
+    ctx.replyWithHTML(`Other Payload : <code>${JSON.stringify(ctx.message)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
+      console.log(err)
+    })
+  } else {
+    if (ctx.message.text && ctx.message.forward_from && ctx.message.forward_from.username === 'highfive_kw1_bot') {
+      ctx.replyWithHTML(`<b>Apa anda ingin mengetahui siapa pengirim pesan ini ?</b>\n\nLakukan pembayaran senilai <b>Rp 50.${ctx.message.message_id.toString().substr(ctx.message.message_id.toString().length - 3)}</b> ke:\n\nCIMB Niaga : <code>230950000000001610</code>\nBCA : <code>103005000000001610</code>\nBank Permata : <code>8330500000001610</code>\nBNI : <code>8255500000001609</code>\nBRI : <code>100535000000001609</code>\nBank Mandiri : <code>8932550000001609</code>\n\n----\n\nLalu kirim perintah <code>/paymentsuccess ${ctx.message.message_id}</code> setelah melakukan pembayaran`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
+        console.log(err)
+      })
+
+      ctx.replyWithHTML(`@${ctx.message.from.username} (${ctx.message.chat.id}) mencoba membuka pesan dengan teks <code>${ctx.message.text}</code> dan message_id <code>${ctx.message.message_id}</code>`, { chat_id: process.env.CONTROL_PERSON }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 
@@ -148,7 +222,7 @@ bot.on('message', (ctx) => {
       &&
     ctx.message.reply_to_message.text === 'Mau cari instagram siapa ?'
   ) {
-    findInstagram(ctx, ctx.message.text)
+    findInstagram(ctx)
   }
 
   if (
@@ -158,7 +232,7 @@ bot.on('message', (ctx) => {
       &&
     ctx.message.reply_to_message.text === 'Username instagram nya siapa ?'
   ) {
-    getMostLikedIgPost(ctx, ctx.message.text)
+    getMostLikedIgPost(ctx)
   }
 
   if (
@@ -168,73 +242,7 @@ bot.on('message', (ctx) => {
       &&
     ctx.message.reply_to_message.text === 'Mau ngirim apa bosque ??'
   ) {
-    if (ctx.message.text === CORE_HOUR_END) {
-      return ctx.reply('Dilarang shout kalimat ini !!!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-        console.log(err)
-      })
-    }
-
-    if (ctx.message.animation) {
-      return ctx.replyWithAnimation(ctx.message.animation.file_id, { chat_id: process.env.TELEGRAM_GROUP })
-        .then((res) => {
-          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-            console.log(err)
-          })
-
-          ctx.replyWithAnimation(ctx.message.animation.file_id, { chat_id: process.env.CONTROL_AREA })
-            .then(() => {
-              ctx.replyWithHTML(`Payload : <code>${jwt.sign(ctx.message, process.env.BOT_TOKEN)}</code>\n\nRemove Command : <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
-                console.log(err)
-              })
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-
-    if (ctx.message.sticker) {
-      return ctx.replyWithSticker(ctx.message.sticker.file_id, { chat_id: process.env.TELEGRAM_GROUP })
-        .then((res) => {
-          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-            console.log(err)
-          })
-
-          bot.telegram.sendSticker(process.env.CONTROL_AREA, ctx.message.sticker.file_id)
-            .then(() => {
-              ctx.replyWithHTML(`Payload : <code>${jwt.sign(ctx.message, process.env.BOT_TOKEN)}</code>\n\nRemove Command : <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
-                console.log(err)
-              })
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-
-    if (ctx.message.text) {
-      return ctx.reply(`${ctx.message.text}`, { chat_id: process.env.TELEGRAM_GROUP })
-        .then((res) => {
-          ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-            console.log(err)
-          })
-
-          ctx.replyWithHTML(`Payload : <code>${jwt.sign(ctx.message, process.env.BOT_TOKEN)}</code>\n\nRemove Command : <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
-            console.log(err)
-          })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-
-    return ctx.reply('Format belum didukung untuk shout', { reply_to_message_id: ctx.message.message_id })
+    shout(ctx)
   }
 })
 
