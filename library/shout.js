@@ -1,18 +1,18 @@
 const jwt = require('jsonwebtoken')
 
 function shout(ctx) {
-  let message = '';
+  let message = ''
 
   if (ctx.message.text.includes('/shout@highfive_kw1_bot')) {
-    message = ctx.message.text.replace('/shout@highfive_kw1_bot', '').trim();
+    message = ctx.message.text.replace('/shout@highfive_kw1_bot', '').trim()
   } else {
-    message = ctx.message.text.replace('/shout', '').trim();
+    message = ctx.message.text.replace('/shout', '').trim()
   }
 
   if (message.length <= 0) {
     return ctx.replyWithHTML('Mau ngirim apa bosque ??', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
+      console.log(err)
+    })
   }
 
   if (message === '📢 Teet teet teet~ core hour udah berakhir~') {

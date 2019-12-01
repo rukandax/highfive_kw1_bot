@@ -94,18 +94,18 @@ bot.command('shout', shout)
 bot.command('deleteshout', deleteshout)
 
 bot.command('paymentsuccess', (ctx) => {
-  let messageId = '';
+  let messageId = ''
 
   if (ctx.message.text.includes('/paymentsuccess@highfive_kw1_bot')) {
-    messageId = ctx.message.text.replace('/paymentsuccess@highfive_kw1_bot', '').trim();
+    messageId = ctx.message.text.replace('/paymentsuccess@highfive_kw1_bot', '').trim()
   } else {
-    messageId = ctx.message.text.replace('/paymentsuccess', '').trim();
+    messageId = ctx.message.text.replace('/paymentsuccess', '').trim()
   }
 
   if (messageId.length <= 0) {
     return ctx.replyWithHTML('Message ID tidak boleh kosong', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
+      console.log(err)
+    })
   }
 
   return ctx.replyWithHTML(`@${ctx.message.from.username} (${ctx.message.chat.id}) melakukan konfirmasi pembayaran dengan message_id <code>${messageId}</code>`, { chat_id: process.env.CONTROL_PERSON }).catch((err) => {
@@ -116,22 +116,22 @@ bot.command('paymentsuccess', (ctx) => {
 bot.command('directshout', (ctx) => {
   if (ctx.message.from.id.toString() !== process.env.CONTROL_PERSON) {
     return ctx.reply('Anda tidak di izinkan menggunakan perintah ini !!!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
+      console.log(err)
+    })
   }
 
-  let text = '';
+  let text = ''
 
   if (ctx.message.text.includes('/directshout@highfive_kw1_bot')) {
-    text = ctx.message.text.replace('/directshout@highfive_kw1_bot', '').trim();
+    text = ctx.message.text.replace('/directshout@highfive_kw1_bot', '').trim()
   } else {
-    text = ctx.message.text.replace('/directshout', '').trim();
+    text = ctx.message.text.replace('/directshout', '').trim()
   }
 
   if (text.length <= 0) {
     return ctx.replyWithHTML('Text tidak boleh kosong', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err);
-    });
+      console.log(err)
+    })
   }
 
   const chatId = text.split(' ')[0]
