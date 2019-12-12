@@ -38,13 +38,13 @@ function shout(ctx) {
   }
 
   if (ctx.message.photo) {
-    return ctx.replyWithPhoto(ctx.message.photo.file_id, { chat_id: process.env.TELEGRAM_GROUP })
+    return ctx.replyWithPhoto(ctx.message.photo[ctx.message.photo.length - 1].file_id, { chat_id: process.env.TELEGRAM_GROUP })
       .then((res) => {
         ctx.replyWithHTML(`Berhasil mengirim pesan, gunakan perintah <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code> untuk menghapus pesan yang telah dikirim.\n\n<i>Hanya bisa menghapus pesan dengan durasi dibawah 48 jam.</i>`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
           console.log(err)
         })
 
-        ctx.replyWithPhoto(ctx.message.photo.file_id, { chat_id: process.env.CONTROL_AREA })
+        ctx.replyWithPhoto(ctx.message.photo[ctx.message.photo.length - 1].file_id, { chat_id: process.env.CONTROL_AREA })
           .then(() => {
             ctx.replyWithHTML(`Payload : <code>${JSON.stringify(ctx.message)}</code>\n\nRemove Command : <code>/deleteshout ${jwt.sign(res.message_id, process.env.BOT_TOKEN)}</code>`, { chat_id: process.env.CONTROL_AREA }).catch((err) => {
               console.log(err)
