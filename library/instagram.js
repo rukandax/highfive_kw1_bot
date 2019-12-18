@@ -45,7 +45,7 @@ const findInstagram = async ctx => {
     });
 
   const links = await axios
-    .get(`http://picpanzee.com/${name}`)
+    .get(`http://picpanzee.com/search/${name}`)
     .then(({ data }) => {
       const users = [];
 
@@ -55,7 +55,7 @@ const findInstagram = async ctx => {
       usersEl.each((_, el) => {
         const username = $(el)
           .attr("href")
-          .replace("http://picpanzee.com/", "");
+          .replace("https://picpanzee.com/", "");
         users.push(username);
       });
 
