@@ -1,241 +1,299 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-require('dotenv').config()
+require("dotenv").config();
 
-const Telegraf = require('telegraf')
-const Schedule = require('node-schedule')
-// const axios = require('axios')
+const Telegraf = require("telegraf");
+const Schedule = require("node-schedule");
+const axios = require("axios");
 
-const {
-  shout
-} = require('./library/shout')
+const { shout } = require("./library/shout");
 
-const {
-  greeting
-} = require('./library/general')
+const { greeting } = require("./library/general");
 
-const {
-  findInstagram
-} = require('./library/instagram')
+const { findInstagram } = require("./library/instagram");
 
-const {
-  getMostLikedIgPost
-} = require('./library/mostlikedigpost')
+const { getMostLikedIgPost } = require("./library/mostlikedigpost");
 
-const CORE_HOUR_END = '📢 Teet teet teet~ core hour udah berakhir~'
+const CORE_HOUR_END = "📢 Teet teet teet~ core hour udah berakhir~";
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
-Schedule.scheduleJob('payday', '0 11 * * 1-5', () => {
-  const today = new Date()
+Schedule.scheduleJob("payday", "0 11 * * 1-5", () => {
+  const today = new Date();
 
-  const dayBeforePayday = new Date()
-  dayBeforePayday.setDate(26)
+  const dayBeforePayday = new Date();
+  dayBeforePayday.setDate(26);
 
-  const payday = new Date()
-  payday.setDate(27)
-  
-  if(payday.getDay() == 0) {
-    dayBeforePayday.setDate(payday.getDate() - 3)
+  const payday = new Date();
+  payday.setDate(27);
+
+  if (payday.getDay() == 0) {
+    dayBeforePayday.setDate(payday.getDate() - 3);
   } else if (payday.getDay() == 6) {
-    dayBeforePayday.setDate(payday.getDate() - 2)
+    dayBeforePayday.setDate(payday.getDate() - 2);
   }
 
   if (today.getDate() === dayBeforePayday.getDate()) {
-    const message = '📢 Besok gajian gaesss~~'
-    
-    bot.telegram.sendMessage(process.env.TELEGRAM_GROUP, message).catch((err) => {
-      console.log(err)
-    })
+    const message = "📢 Besok gajian gaesss~~";
+
+    bot.telegram.sendMessage(process.env.TELEGRAM_GROUP, message).catch(err => {
+      console.log(err);
+    });
   }
-})
+});
 
-Schedule.scheduleJob('endCoreHour', '0 17 * * 1-5', () => {
-  bot.telegram.sendMessage(process.env.TELEGRAM_GROUP, CORE_HOUR_END).catch((err) => {
-    console.log(err)
-  })
-})
+Schedule.scheduleJob("endCoreHour", "0 17 * * 1-5", () => {
+  bot.telegram
+    .sendMessage(process.env.TELEGRAM_GROUP, CORE_HOUR_END)
+    .catch(err => {
+      console.log(err);
+    });
+});
 
-// let isWebDown = false
-// Schedule.scheduleJob('upMonitor', '*/5 * * * *', () => {
-//   const message = 'Bukalapak down ya ?'
+let isWebDown = false;
+Schedule.scheduleJob("upMonitor", "*/2 * * * *", () => {
+  const message = "Bukalapak down ya ?";
 
-//   axios.get('https://www.bukalapak.com/version.txt')
-//     .then(({ data }) => {
-//       if (data.trim().length === 40) {
-//         isWebDown = false
-//       } else {
-//         if (!isWebDown) {
-//           isWebDown = true
-  
-//           bot.telegram.sendMessage(process.env.TELEGRAM_GROUP, message).catch((err) => {
-//             console.log(err)
-//           })
-//         }
-//       }
-//     })
-//     .catch(() => {
-//       if (!isWebDown) {
-//         isWebDown = true
+  axios
+    .get("https://www.bukalapak.com/version.txt")
+    .then(({ data }) => {
+      if (data.trim().length === 40) {
+        isWebDown = false;
+      } else {
+        if (!isWebDown) {
+          isWebDown = true;
 
-//         bot.telegram.sendMessage(process.env.TELEGRAM_GROUP, message).catch((err) => {
-//           console.log(err)
-//         })
-//       }
-//     })
-// })
+          bot.telegram
+            .sendMessage(process.env.TELEGRAM_GROUP, message)
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      }
+    })
+    .catch(() => {
+      if (!isWebDown) {
+        isWebDown = true;
 
-bot.start(greeting)
-bot.command('help', greeting)
-bot.command('instagram', findInstagram)
-bot.command('mostlikedigpost', getMostLikedIgPost)
-bot.command('shout', shout)
-bot.command('deleteshout', async (ctx) => {
-  let text = ''
+        bot.telegram
+          .sendMessage(process.env.TELEGRAM_GROUP, message)
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    });
+});
 
-  if (ctx.message.text.includes('/deleteshout@highfive_kw1_bot')) {
-    text = ctx.message.text.replace('/deleteshout@highfive_kw1_bot', '').trim()
+bot.start(greeting);
+bot.command("help", greeting);
+bot.command("instagram", findInstagram);
+bot.command("mostlikedigpost", getMostLikedIgPost);
+bot.command("shout", shout);
+bot.command("deleteshout", async ctx => {
+  let text = "";
+
+  if (ctx.message.text.includes("/deleteshout@highfive_kw1_bot")) {
+    text = ctx.message.text.replace("/deleteshout@highfive_kw1_bot", "").trim();
   } else {
-    text = ctx.message.text.replace('/deleteshout', '').trim()
+    text = ctx.message.text.replace("/deleteshout", "").trim();
   }
 
   if (!text.length) {
-    return ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT masih kosong.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
+    return ctx
+      .reply("Pesan yang mau dihapus tidak ditemukan. JWT masih kosong.", {
+        reply_to_message_id: ctx.message.message_id
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  let decoded = ''
+  let decoded = "";
   try {
-    decoded = await jwt.verify(text, process.env.BOT_TOKEN, (_, payload) => payload)
+    decoded = await jwt.verify(
+      text,
+      process.env.BOT_TOKEN,
+      (_, payload) => payload
+    );
   } catch (err) {
-    ctx.reply('Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
+    ctx
+      .reply("Pesan yang mau dihapus tidak ditemukan. JWT tidak valid.", {
+        reply_to_message_id: ctx.message.message_id
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   if (decoded.length) {
-    return bot.telegram.deleteMessage(process.env.TELEGRAM_GROUP, parseInt(decoded))
+    return bot.telegram
+      .deleteMessage(process.env.TELEGRAM_GROUP, parseInt(decoded))
       .then(() => {
-        ctx.reply('Berhasil menghapus pesan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err)
-        })
+        ctx
+          .reply("Berhasil menghapus pesan.", {
+            reply_to_message_id: ctx.message.message_id
+          })
+          .catch(err => {
+            console.log(err);
+          });
       })
       .catch(() => {
-        ctx.reply('Pesan yang mau dihapus tidak ditemukan.', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-          console.log(err)
-        })
-      })
+        ctx
+          .reply("Pesan yang mau dihapus tidak ditemukan.", {
+            reply_to_message_id: ctx.message.message_id
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
   }
-})
+});
 
-bot.command('paymentsuccess', (ctx) => {
-  let messageId = ''
+bot.command("paymentsuccess", ctx => {
+  let messageId = "";
 
-  if (ctx.message.text.includes('/paymentsuccess@highfive_kw1_bot')) {
-    messageId = ctx.message.text.replace('/paymentsuccess@highfive_kw1_bot', '').trim()
+  if (ctx.message.text.includes("/paymentsuccess@highfive_kw1_bot")) {
+    messageId = ctx.message.text
+      .replace("/paymentsuccess@highfive_kw1_bot", "")
+      .trim();
   } else {
-    messageId = ctx.message.text.replace('/paymentsuccess', '').trim()
+    messageId = ctx.message.text.replace("/paymentsuccess", "").trim();
   }
 
   if (messageId.length <= 0) {
-    return ctx.replyWithHTML('Message ID tidak boleh kosong', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
+    return ctx
+      .replyWithHTML("Message ID tidak boleh kosong", {
+        reply_to_message_id: ctx.message.message_id
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  return ctx.replyWithHTML(`@${ctx.message.from.username} (${ctx.message.chat.id}) melakukan konfirmasi pembayaran dengan message_id <code>${messageId}</code>`, { chat_id: process.env.CONTROL_PERSON }).catch((err) => {
-    console.log(err)
-  })
-})
+  return ctx
+    .replyWithHTML(
+      `@${ctx.message.from.username} (${ctx.message.chat.id}) melakukan konfirmasi pembayaran dengan message_id <code>${messageId}</code>`,
+      { chat_id: process.env.CONTROL_PERSON }
+    )
+    .catch(err => {
+      console.log(err);
+    });
+});
 
-bot.command('directshout', (ctx) => {
+bot.command("directshout", ctx => {
   if (ctx.message.from.id.toString() !== process.env.CONTROL_PERSON) {
-    return ctx.reply('Anda tidak di izinkan menggunakan perintah ini !!!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
+    return ctx
+      .reply("Anda tidak di izinkan menggunakan perintah ini !!!", {
+        reply_to_message_id: ctx.message.message_id
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  let text = ''
+  let text = "";
 
-  if (ctx.message.text.includes('/directshout@highfive_kw1_bot')) {
-    text = ctx.message.text.replace('/directshout@highfive_kw1_bot', '').trim()
+  if (ctx.message.text.includes("/directshout@highfive_kw1_bot")) {
+    text = ctx.message.text.replace("/directshout@highfive_kw1_bot", "").trim();
   } else {
-    text = ctx.message.text.replace('/directshout', '').trim()
+    text = ctx.message.text.replace("/directshout", "").trim();
   }
 
   if (text.length <= 0) {
-    return ctx.replyWithHTML('Text tidak boleh kosong', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
+    return ctx
+      .replyWithHTML("Text tidak boleh kosong", {
+        reply_to_message_id: ctx.message.message_id
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  const chatId = text.split(' ')[0]
-  const username = text.split(' ')[1]
+  const chatId = text.split(" ")[0];
+  const username = text.split(" ")[1];
 
   if (chatId && username) {
-    ctx.reply(`@${username}`, { chat_id: chatId }).catch((err) => {
-      console.log(err)
-    })
-  
-    return ctx.reply('Berhasil !!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
-  } else {
-    return ctx.reply('Gagal !!', { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
-  }
-})
+    ctx.reply(`@${username}`, { chat_id: chatId }).catch(err => {
+      console.log(err);
+    });
 
-bot.on('message', (ctx) => {
+    return ctx
+      .reply("Berhasil !!", { reply_to_message_id: ctx.message.message_id })
+      .catch(err => {
+        console.log(err);
+      });
+  } else {
+    return ctx
+      .reply("Gagal !!", { reply_to_message_id: ctx.message.message_id })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+});
+
+bot.on("message", ctx => {
   if (ctx.message.text) {
-    ctx.message.text.trim()
-    
-    while (ctx.message.text.includes('  ')) {
-      ctx.message.text = ctx.message.text.replace('  ', ' ')
+    ctx.message.text.trim();
+
+    while (ctx.message.text.includes("  ")) {
+      ctx.message.text = ctx.message.text.replace("  ", " ");
     }
   }
 
-  if (ctx.message.chat.type === 'private' && ctx.message.text && ctx.message.forward_from && ctx.message.forward_from.username === 'highfive_kw1_bot') {
-    ctx.replyWithHTML(`<b>Apa anda ingin mengetahui siapa pengirim pesan ini ?</b>\n\nLakukan pembayaran senilai <b>Rp 50.${ctx.message.message_id.toString().substr(ctx.message.message_id.toString().length - 3)}</b> ke:\n\nCIMB Niaga : <code>230950000000001610</code>\nBCA : <code>103005000000001610</code>\nBank Permata : <code>8330500000001610</code>\nBNI : <code>8255500000001609</code>\nBRI : <code>100535000000001609</code>\nBank Mandiri : <code>8932550000001609</code>\n\n----\n\nLalu kirim perintah <code>/paymentsuccess ${ctx.message.message_id}</code> setelah melakukan pembayaran`, { reply_to_message_id: ctx.message.message_id }).catch((err) => {
-      console.log(err)
-    })
+  if (
+    ctx.message.chat.type === "private" &&
+    ctx.message.text &&
+    ctx.message.forward_from &&
+    ctx.message.forward_from.username === "highfive_kw1_bot"
+  ) {
+    ctx
+      .replyWithHTML(
+        `<b>Apa anda ingin mengetahui siapa pengirim pesan ini ?</b>\n\nLakukan pembayaran senilai <b>Rp 50.${ctx.message.message_id
+          .toString()
+          .substr(
+            ctx.message.message_id.toString().length - 3
+          )}</b> ke:\n\nCIMB Niaga : <code>230950000000001610</code>\nBCA : <code>103005000000001610</code>\nBank Permata : <code>8330500000001610</code>\nBNI : <code>8255500000001609</code>\nBRI : <code>100535000000001609</code>\nBank Mandiri : <code>8932550000001609</code>\n\n----\n\nLalu kirim perintah <code>/paymentsuccess ${
+          ctx.message.message_id
+        }</code> setelah melakukan pembayaran`,
+        { reply_to_message_id: ctx.message.message_id }
+      )
+      .catch(err => {
+        console.log(err);
+      });
 
-    ctx.replyWithHTML(`@${ctx.message.from.username} (${ctx.message.chat.id}) mencoba membuka pesan dengan teks <code>${ctx.message.text}</code> dan message_id <code>${ctx.message.message_id}</code>`, { chat_id: process.env.CONTROL_PERSON }).catch((err) => {
-      console.log(err)
-    })
+    ctx
+      .replyWithHTML(
+        `@${ctx.message.from.username} (${ctx.message.chat.id}) mencoba membuka pesan dengan teks <code>${ctx.message.text}</code> dan message_id <code>${ctx.message.message_id}</code>`,
+        { chat_id: process.env.CONTROL_PERSON }
+      )
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
-    ctx.message.reply_to_message.text === 'Mau cari instagram siapa ?'
+    ctx.message.reply_to_message &&
+    ctx.message.reply_to_message.from.username === "highfive_kw1_bot" &&
+    ctx.message.reply_to_message.text === "Mau cari instagram siapa ?"
   ) {
-    findInstagram(ctx)
+    findInstagram(ctx);
   }
 
   if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
-    ctx.message.reply_to_message.text === 'Username instagram nya siapa ?'
+    ctx.message.reply_to_message &&
+    ctx.message.reply_to_message.from.username === "highfive_kw1_bot" &&
+    ctx.message.reply_to_message.text === "Username instagram nya siapa ?"
   ) {
-    getMostLikedIgPost(ctx)
+    getMostLikedIgPost(ctx);
   }
 
   if (
-    ctx.message.reply_to_message
-      &&
-    ctx.message.reply_to_message.from.username === 'highfive_kw1_bot'
-      &&
-    ctx.message.reply_to_message.text === 'Mau ngirim apa bosque ??'
+    ctx.message.reply_to_message &&
+    ctx.message.reply_to_message.from.username === "highfive_kw1_bot" &&
+    ctx.message.reply_to_message.text === "Mau ngirim apa bosque ??"
   ) {
-    shout(ctx)
+    shout(ctx);
   }
-})
+});
 
-bot.launch()
+bot.launch();
