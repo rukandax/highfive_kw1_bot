@@ -210,10 +210,10 @@ bot.command("directshout", ctx => {
   }
 
   const chatId = text.split(" ")[0];
-  const username = text.split(" ")[1];
+  const text = text.slice(1).join(" ");
 
-  if (chatId && username) {
-    ctx.reply(`@${username}`, { chat_id: chatId }).catch(err => {
+  if (chatId && text) {
+    ctx.reply(`${text}`, { chat_id: chatId }).catch(err => {
       console.log(err);
     });
 
@@ -232,6 +232,8 @@ bot.command("directshout", ctx => {
 });
 
 bot.on("message", ctx => {
+  console.log(ctx.message);
+
   if (ctx.message.text) {
     ctx.message.text.trim();
 
