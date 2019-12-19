@@ -14,6 +14,8 @@ const { findInstagram } = require("./library/instagram");
 
 const { getMostLikedIgPost } = require("./library/mostlikedigpost");
 
+const { kpop } = require("./library/kpop");
+
 const CORE_HOUR_END = "📢 Teet teet teet~ core hour udah berakhir~";
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -88,7 +90,9 @@ bot.start(greeting);
 bot.command("help", greeting);
 bot.command("instagram", findInstagram);
 bot.command("mostlikedigpost", getMostLikedIgPost);
+bot.command("kpop", kpop);
 bot.command("shout", shout);
+
 bot.command("deleteshout", async ctx => {
   let text = "";
 
@@ -232,8 +236,6 @@ bot.command("directshout", ctx => {
 });
 
 bot.on("message", ctx => {
-  console.log(ctx.message);
-
   if (ctx.message.text) {
     ctx.message.text.trim();
 

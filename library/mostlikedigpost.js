@@ -85,7 +85,7 @@ async function getMostLikedIgPost(ctx) {
 
     await browser.close();
 
-    ctx
+    return ctx
       .replyWithPhoto(payload.image, {
         reply_to_message_id: ctx.message.message_id,
         caption: payload.caption
@@ -94,7 +94,7 @@ async function getMostLikedIgPost(ctx) {
         console.log(err);
       });
   } catch (err) {
-    ctx
+    return ctx
       .reply(
         "Gak ketemu nih, mungkin akun nya di private atau service lagi down..",
         { reply_to_message_id: ctx.message.message_id }
