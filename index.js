@@ -210,7 +210,7 @@ bot.command("directshout", ctx => {
   }
 
   const chatId = text.split(" ")[0];
-  const text = text.slice(1).join(" ");
+  text = text.slice(1).join(" ");
 
   if (chatId && text) {
     ctx.reply(`${text}`, { chat_id: chatId }).catch(err => {
