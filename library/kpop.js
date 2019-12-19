@@ -29,7 +29,7 @@ async function kpop(ctx) {
       items = await page.evaluate(() => {
         const video = [];
         const imageElements = document.querySelectorAll(
-          ".list-stream .post-container video source:nth-child(1)"
+          ".list-stream .post-container video source:nth-child(2)"
         );
 
         imageElements.forEach(imageElement => {
