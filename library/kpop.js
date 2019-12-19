@@ -25,7 +25,7 @@ async function kpop(ctx) {
     let previousHeight;
     let items = [];
 
-    while (items.length < 20) {
+    while (items.length < 10) {
       items = await page.evaluate(() => {
         const video = [];
         const imageElements = document.querySelectorAll(
