@@ -53,7 +53,7 @@ async function kpop(ctx) {
 
     const randomizedIndex = parseInt(Math.random() * items.length);
 
-    return ctx
+    ctx
       .replyWithVideo(items[randomizedIndex], {
         reply_to_message_id: ctx.message.message_id
       })
@@ -63,7 +63,7 @@ async function kpop(ctx) {
   } catch (err) {
     console.log(err);
 
-    return ctx
+    ctx
       .reply("Fiturnya lagi rusak nih..", {
         reply_to_message_id: ctx.message.message_id
       })
