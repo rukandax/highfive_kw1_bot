@@ -14,7 +14,7 @@ const { findInstagram } = require("./library/instagram");
 
 const { getMostLikedIgPost } = require("./library/mostlikedigpost");
 
-const { kpop } = require("./library/kpop");
+const { kpop, nsfw } = require("./library/gag");
 
 const CORE_HOUR_END = "📢 Teet teet teet~ core hour udah berakhir~";
 
@@ -91,6 +91,7 @@ bot.command("help", greeting);
 bot.command("instagram", findInstagram);
 bot.command("mostlikedigpost", getMostLikedIgPost);
 bot.command("kpop", kpop);
+bot.command("nsfw", nsfw);
 bot.command("shout", shout);
 
 bot.command("deleteshout", async ctx => {
