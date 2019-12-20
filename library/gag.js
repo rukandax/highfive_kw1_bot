@@ -1,12 +1,25 @@
 const puppeteer = require("puppeteer");
 
 async function kpop(ctx) {
-  var type = "video";
+  let type;
 
   if (ctx.message.text.includes("/kpop@highfive_kw1_bot")) {
     type = ctx.message.text.replace("/kpop@highfive_kw1_bot", "").trim();
   } else {
     type = ctx.message.text.replace("/kpop", "").trim();
+  }
+
+  if (!["image", "video"].includes(type)) {
+    return ctx
+      .replyWithHTML(
+        "Tulis <code>/kpop image</code> atau <code>/kpop video</code>",
+        {
+          reply_to_message_id: ctx.message.message_id
+        }
+      )
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   ctx
@@ -47,7 +60,9 @@ async function kpop(ctx) {
 
           return image;
         });
-      } else {
+      }
+
+      if (type === "video") {
         items = await page.evaluate(() => {
           const video = [];
           const imageElements = document.querySelectorAll(
@@ -97,12 +112,25 @@ async function kpop(ctx) {
 }
 
 async function nsfw(ctx) {
-  var type = "video";
+  let type;
 
   if (ctx.message.text.includes("/nsfw@highfive_kw1_bot")) {
     type = ctx.message.text.replace("/nsfw@highfive_kw1_bot", "").trim();
   } else {
     type = ctx.message.text.replace("/nsfw", "").trim();
+  }
+
+  if (!["image", "video"].includes(type)) {
+    return ctx
+      .replyWithHTML(
+        "Tulis <code>/nsfw image</code> atau <code>/nsfw video</code>",
+        {
+          reply_to_message_id: ctx.message.message_id
+        }
+      )
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   ctx
@@ -153,7 +181,9 @@ async function nsfw(ctx) {
 
           return image;
         });
-      } else {
+      }
+
+      if (type === "video") {
         items = await page.evaluate(() => {
           const video = [];
           const imageElements = document.querySelectorAll(
