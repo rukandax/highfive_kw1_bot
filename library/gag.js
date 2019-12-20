@@ -99,10 +99,10 @@ async function kpop(ctx) {
 async function nsfw(ctx) {
   var type = "video";
 
-  if (ctx.message.text.includes("/kpop@highfive_kw1_bot")) {
-    type = ctx.message.text.replace("/kpop@highfive_kw1_bot", "").trim();
+  if (ctx.message.text.includes("/nsfw@highfive_kw1_bot")) {
+    type = ctx.message.text.replace("/nsfw@highfive_kw1_bot", "").trim();
   } else {
-    type = ctx.message.text.replace("/kpop", "").trim();
+    type = ctx.message.text.replace("/nsfw", "").trim();
   }
 
   ctx
