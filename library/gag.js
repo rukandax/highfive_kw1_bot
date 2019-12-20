@@ -9,17 +9,8 @@ async function kpop(ctx) {
     type = ctx.message.text.replace("/kpop", "").trim();
   }
 
-  if (!["image", "video"].includes(type)) {
-    return ctx
-      .replyWithHTML(
-        "Tulis <code>/kpop image</code> atau <code>/kpop video</code>",
-        {
-          reply_to_message_id: ctx.message.message_id
-        }
-      )
-      .catch(err => {
-        console.log(err);
-      });
+  if (type !== "video") {
+    type = "image";
   }
 
   ctx
@@ -120,17 +111,8 @@ async function nsfw(ctx) {
     type = ctx.message.text.replace("/nsfw", "").trim();
   }
 
-  if (!["image", "video"].includes(type)) {
-    return ctx
-      .replyWithHTML(
-        "Tulis <code>/nsfw image</code> atau <code>/nsfw video</code>",
-        {
-          reply_to_message_id: ctx.message.message_id
-        }
-      )
-      .catch(err => {
-        console.log(err);
-      });
+  if (type !== "video") {
+    type = "image";
   }
 
   ctx
