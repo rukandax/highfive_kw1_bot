@@ -172,9 +172,7 @@ async function nsfw(ctx) {
     await page.type("#login-email-password", process.env.GAG_PASS);
 
     await page.click("#login-email .btn");
-    await page.waitForNavigation({
-      timeout: 3000000
-    });
+    await page.waitForSelector(".list-stream");
 
     let previousHeight;
     let items = [];
