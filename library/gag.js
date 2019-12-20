@@ -1,3 +1,4 @@
+const fs = require("fs").promises;
 const puppeteer = require("puppeteer");
 
 async function kpop(ctx) {
@@ -42,9 +43,16 @@ async function kpop(ctx) {
       }
     });
 
+    let cookiesString = await fs.readFile("./cookies");
+    let cookies = JSON.parse(cookiesString);
+    await page.setCookie(...cookies);
+
     await page.goto("https://9gag.com/kpop", {
       timeout: 3000000
     });
+
+    cookies = await page.cookies();
+    await fs.writeFile("./cookies", JSON.stringify(cookies, null, 2));
 
     await page.waitForSelector(".list-stream");
 
@@ -143,7 +151,7 @@ async function nsfw(ctx) {
   try {
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      headless: true
+      headless: false
     });
 
     const page = await browser.newPage();
@@ -158,21 +166,35 @@ async function nsfw(ctx) {
       }
     });
 
+    let cookiesString = await fs.readFile("./cookies");
+    let cookies = JSON.parse(cookiesString);
+    await page.setCookie(...cookies);
+
     await page.goto("https://9gag.com/nsfw", {
       timeout: 3000000
     });
 
-    await page.waitForSelector("#jsid-login-button");
-    await page.click("#jsid-login-button");
+    const isLogin = await page.evaluate(() => {
+      const userFunction = document.querySelector("#jsid-user-function");
+      return !userFunction.classList.contains("hide");
+    });
 
-    await page.waitForSelector("#login-email-name");
-    await page.type("#login-email-name", process.env.GAG_EMAIL);
+    if (!isLogin) {
+      await page.waitForSelector("#jsid-login-button");
+      await page.click("#jsid-login-button");
 
-    await page.waitForSelector("#login-email-password");
-    await page.type("#login-email-password", process.env.GAG_PASS);
+      await page.waitForSelector("#login-email-name");
+      await page.type("#login-email-name", process.env.GAG_EMAIL);
 
-    await page.click("#login-email .btn");
-    await page.waitForSelector(".list-stream");
+      await page.waitForSelector("#login-email-password");
+      await page.type("#login-email-password", process.env.GAG_PASS);
+
+      await page.click("#login-email .btn");
+      await page.waitForNavigation();
+    }
+
+    cookies = await page.cookies();
+    await fs.writeFile("./cookies", JSON.stringify(cookies, null, 2));
 
     let previousHeight;
     let items = [];

@@ -1,0 +1,190 @@
+[
+  {
+    "name": "d7s_spc",
+    "value": "8",
+    "domain": "9gag.com",
+    "path": "/",
+    "expires": 1576844732,
+    "size": 8,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "_pk_id.7.f7ab",
+    "value": "ad81e6357fd678bf.1576842077.1.1576842932.1576842077.",
+    "domain": "9gag.com",
+    "path": "/",
+    "expires": 1610797277,
+    "size": 65,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "gag_tz",
+    "value": "7",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1608378931,
+    "size": 7,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "__cfduid",
+    "value": "d8e34ff177e6ed4f82c0935bf1f8d758f1576842076",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1579434076.206051,
+    "size": 51,
+    "httpOnly": true,
+    "secure": false,
+    "session": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_ga",
+    "value": "GA1.2.614308733.1576842077",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1639914931,
+    "size": 29,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "____lo",
+    "value": "ID",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1579995677.206265,
+    "size": 8,
+    "httpOnly": false,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "__gads",
+    "value": "ID=7d7bc2cc522831bb:T=1576842175:S=ALNI_MZzEbKQARSlATerONNeNB9w9V2CAw",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1639914175,
+    "size": 75,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "____ri",
+    "value": "9706",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1579995677.206209,
+    "size": 10,
+    "httpOnly": false,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "sign_up_referer",
+    "value": "https%3A%2F%2F9gag.com%2Fnsfw",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1608378081,
+    "size": 44,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "_pk_ses.7.f7ab",
+    "value": "*",
+    "domain": "9gag.com",
+    "path": "/",
+    "expires": 1576844732,
+    "size": 15,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "PHPSESSID",
+    "value": "b0aevk068id1gd6dkl600pi43h",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1579434691.293244,
+    "size": 35,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "_fbp",
+    "value": "fb.1.1576842077752.701779324",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1584618932,
+    "size": 32,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "__rtgt_sid",
+    "value": "k4e327by0r4n8d",
+    "domain": "9gag.com",
+    "path": "/",
+    "expires": 1576844732,
+    "size": 24,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "ts1",
+    "value": "137fea11252dd2e0cd21e3bb9692767bf5831ffa",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1892202080.73822,
+    "size": 43,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "d7s_uid",
+    "value": "k4e327by0r4n8d",
+    "domain": "9gag.com",
+    "path": "/",
+    "expires": 1639914932,
+    "size": 21,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "session",
+    "value": "eyJpdiI6Im1icFJVZVY4cmtCbDh3aXF1R1VpY3IrdUR5UExlSTZWTXU1YUszckxwRzg9IiwidmFsdWUiOiI5QnY2MmRVdk13NGxxc0lzMGNcL2p6ZDE0SkU1OFdWOHVpZ1hHT2hzK0tscG9hV29IWFwvb0JwcHlXQ1JkcGl1TzVtZDVBMDNjczQycE04OXFENVdcL3lzTml6WVZSKzE5ZTBFcjRQUnhZdjBNbDhIOWduN3JYalJUdnNVWktIQlh3Q0p4cTdoODlhWVk5NU54WU4xelVMZExES0hneFwva0I3NW9QK2I5Mlh3SWxPdDN2cEZHY3V4NFg1NGZcL2o5aUtEeWJmSHVKcjlqRGYycWZjRHdpaG52clZpSEdSMnI3RldpNWdGeld5MmNNYTQ5djRiM3k5a2VFSTdMVjZZR016UkVBaG1nQ0FSRktrTXVaQjBDdDJYaTVMRkxLRktJaGVIZG9MQkNGaVNiQ0I4PSIsIm1hYyI6IjU1NjBiNGUxZmE3MDAzYWU3NDU0ZjAwZGRlYWYyNjBlZmE4MTQ5YjI4OWEzYWEzZDMwNzhkM2VkYjU4MzdiZTUifQ%3D%3D",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1579434691.293162,
+    "size": 603,
+    "httpOnly": true,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "_gid",
+    "value": "GA1.2.1661754316.1576842077",
+    "domain": ".9gag.com",
+    "path": "/",
+    "expires": 1576929331,
+    "size": 31,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  }
+]
