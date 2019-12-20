@@ -14,9 +14,12 @@ async function kpop(ctx) {
   }
 
   ctx
-    .reply("Sebentar ya bos..", {
-      reply_to_message_id: ctx.message.message_id
-    })
+    .replyWithHTML(
+      "Sebentar ya bos.. Bisa <code>/kpop video</code> atau <code>/kpop image</code>",
+      {
+        reply_to_message_id: ctx.message.message_id
+      }
+    )
     .catch(err => {
       console.log(err);
     });
@@ -116,9 +119,12 @@ async function nsfw(ctx) {
   }
 
   ctx
-    .reply("Sebentar ya bos..", {
-      reply_to_message_id: ctx.message.message_id
-    })
+    .replyWithHTML(
+      "Sebentar ya bos.. Bisa <code>/nsfw video</code> atau <code>/nsfw image</code>",
+      {
+        reply_to_message_id: ctx.message.message_id
+      }
+    )
     .catch(err => {
       console.log(err);
     });
