@@ -31,6 +31,17 @@ async function kpop(ctx) {
     });
 
     const page = await browser.newPage();
+    await page.setRequestInterception(true);
+    page.on("request", request => {
+      if (
+        ["image", "stylesheet", "font"].indexOf(request.resourceType()) !== -1
+      ) {
+        request.abort();
+      } else {
+        request.continue();
+      }
+    });
+
     await page.goto("https://9gag.com/kpop", {
       timeout: 3000000
     });
@@ -136,6 +147,17 @@ async function nsfw(ctx) {
     });
 
     const page = await browser.newPage();
+    await page.setRequestInterception(true);
+    page.on("request", request => {
+      if (
+        ["image", "stylesheet", "font"].indexOf(request.resourceType()) !== -1
+      ) {
+        request.abort();
+      } else {
+        request.continue();
+      }
+    });
+
     await page.goto("https://9gag.com/nsfw", {
       timeout: 3000000
     });
