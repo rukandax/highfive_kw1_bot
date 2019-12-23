@@ -1,5 +1,8 @@
 const fs = require("fs").promises;
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+
+puppeteer.use(StealthPlugin());
 
 async function kpop(ctx) {
   let type;
