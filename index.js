@@ -4,16 +4,11 @@ require("dotenv").config();
 
 const Telegraf = require("telegraf");
 const Schedule = require("node-schedule");
-const axios = require("axios");
 
 const { shout } = require("./library/shout");
-
 const { greeting } = require("./library/general");
-
 const { findInstagram } = require("./library/instagram");
-
 const { getMostLikedIgPost } = require("./library/mostlikedigpost");
-
 const { kpop, nsfw } = require("./library/gag");
 
 const CORE_HOUR_END = "📢 Teet teet teet~ core hour udah berakhir~";
@@ -49,40 +44,6 @@ Schedule.scheduleJob("endCoreHour", "0 17 * * 1-5", () => {
     .sendMessage(process.env.TELEGRAM_GROUP, CORE_HOUR_END)
     .catch(err => {
       console.log(err);
-    });
-});
-
-let isWebDown = false;
-Schedule.scheduleJob("upMonitor", "*/2 * * * *", () => {
-  const message = "Bukalapak down ya ?";
-
-  axios
-    .get("https://www.bukalapak.com/version.txt")
-    .then(({ data }) => {
-      if (data.trim().length === 40) {
-        isWebDown = false;
-      } else {
-        if (!isWebDown) {
-          isWebDown = true;
-
-          bot.telegram
-            .sendMessage(process.env.TELEGRAM_GROUP, message)
-            .catch(err => {
-              console.log(err);
-            });
-        }
-      }
-    })
-    .catch(() => {
-      if (!isWebDown) {
-        isWebDown = true;
-
-        bot.telegram
-          .sendMessage(process.env.TELEGRAM_GROUP, message)
-          .catch(err => {
-            console.log(err);
-          });
-      }
     });
 });
 
