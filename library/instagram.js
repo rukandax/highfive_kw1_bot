@@ -45,17 +45,17 @@ const findInstagram = async ctx => {
     });
 
   const links = await axios
-    .get(`http://picpanzee.com/search/${name}`)
+    .get(`https://insta-stalkerr.com/search/?q=${name}`)
     .then(({ data }) => {
       const users = [];
 
       const $ = cheerio.load(data);
-      const usersEl = $(".grid-user-wrapper a");
+      const usersEl = $(".row:nth-child(3) .col-md-3 a");
 
       usersEl.each((_, el) => {
         const username = $(el)
           .attr("href")
-          .replace("https://picpanzee.com/", "");
+          .replace("https://insta-stalkerr.com/profile/", "");
         users.push(username);
       });
 
