@@ -1,8 +1,7 @@
-const fs = require("fs").promises;
-const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+const { union } = require("lodash");
 
-puppeteer.use(StealthPlugin());
+const fs = require("fs").promises;
+const puppeteer = require("puppeteer");
 
 async function kpop(ctx) {
   let type;
@@ -35,10 +34,18 @@ async function kpop(ctx) {
     });
 
     const page = await browser.newPage();
+
+    await page.setViewport({
+      width: 1024,
+      height: 1024
+    });
+
     await page.setRequestInterception(true);
     page.on("request", request => {
       if (
-        ["image", "stylesheet", "font"].indexOf(request.resourceType()) !== -1
+        ["image", "video", "stylesheet", "font"].indexOf(
+          request.resourceType()
+        ) !== -1
       ) {
         request.abort();
       } else {
@@ -46,16 +53,14 @@ async function kpop(ctx) {
       }
     });
 
-    let cookiesString = await fs.readFile("./cookies");
+    let cookiesString = await fs.readFile("./cg");
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
 
-    await page.goto("https://9gag.com/kpop", {
-      timeout: 3000000
-    });
+    await page.goto("https://9gag.com/kpop");
 
     cookies = await page.cookies();
-    await fs.writeFile("./cookies", JSON.stringify(cookies, null, 2));
+    await fs.writeFile("./cg", JSON.stringify(cookies, null, 2));
 
     await page.waitForSelector(".list-stream");
 
@@ -64,7 +69,7 @@ async function kpop(ctx) {
 
     while (items.length < 25) {
       if (type === "image") {
-        items = await page.evaluate(() => {
+        const collected = await page.evaluate(() => {
           const image = [];
           const imageElements = document.querySelectorAll(
             ".list-stream .post-container img"
@@ -76,10 +81,12 @@ async function kpop(ctx) {
 
           return image;
         });
+
+        items = union(items, collected);
       }
 
       if (type === "video") {
-        items = await page.evaluate(() => {
+        const collected = await page.evaluate(() => {
           const video = [];
           const imageElements = document.querySelectorAll(
             ".list-stream .post-container video source:nth-child(2)"
@@ -93,6 +100,8 @@ async function kpop(ctx) {
 
           return video;
         });
+
+        items = union(items, collected);
       }
 
       previousHeight = await page.evaluate("document.body.scrollHeight");
@@ -107,13 +116,25 @@ async function kpop(ctx) {
 
     const randomizedIndex = parseInt(Math.random() * items.length);
 
-    ctx
-      .replyWithVideo(items[randomizedIndex], {
-        reply_to_message_id: ctx.message.message_id
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if (type === "image") {
+      ctx
+        .replyWithPhoto(items[randomizedIndex], {
+          reply_to_message_id: ctx.message.message_id
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    if (type === "video") {
+      ctx
+        .replyWithVideo(items[randomizedIndex], {
+          reply_to_message_id: ctx.message.message_id
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   } catch (err) {
     console.log(err);
 
@@ -158,10 +179,18 @@ async function nsfw(ctx) {
     });
 
     const page = await browser.newPage();
+
+    await page.setViewport({
+      width: 1024,
+      height: 1024
+    });
+
     await page.setRequestInterception(true);
     page.on("request", request => {
       if (
-        ["image", "stylesheet", "font"].indexOf(request.resourceType()) !== -1
+        ["image", "video", "stylesheet", "font"].indexOf(
+          request.resourceType()
+        ) !== -1
       ) {
         request.abort();
       } else {
@@ -169,13 +198,11 @@ async function nsfw(ctx) {
       }
     });
 
-    let cookiesString = await fs.readFile("./cookies");
+    let cookiesString = await fs.readFile("./cg");
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
 
-    await page.goto("https://9gag.com/nsfw", {
-      timeout: 3000000
-    });
+    await page.goto("https://9gag.com/nsfw");
 
     const isLogin = await page.evaluate(() => {
       const userFunction = document.querySelector("#jsid-user-function");
@@ -197,14 +224,14 @@ async function nsfw(ctx) {
     }
 
     cookies = await page.cookies();
-    await fs.writeFile("./cookies", JSON.stringify(cookies, null, 2));
+    await fs.writeFile("./cg", JSON.stringify(cookies, null, 2));
 
     let previousHeight;
     let items = [];
 
     while (items.length < 25) {
       if (type === "image") {
-        items = await page.evaluate(() => {
+        const collected = await page.evaluate(() => {
           const image = [];
           const imageElements = document.querySelectorAll(
             ".list-stream .post-container img"
@@ -216,10 +243,12 @@ async function nsfw(ctx) {
 
           return image;
         });
+
+        items = union(items, collected);
       }
 
       if (type === "video") {
-        items = await page.evaluate(() => {
+        const collected = await page.evaluate(() => {
           const video = [];
           const imageElements = document.querySelectorAll(
             ".list-stream .post-container video source:nth-child(2)"
@@ -233,6 +262,8 @@ async function nsfw(ctx) {
 
           return video;
         });
+
+        items = union(items, collected);
       }
 
       previousHeight = await page.evaluate("document.body.scrollHeight");
@@ -247,13 +278,25 @@ async function nsfw(ctx) {
 
     const randomizedIndex = parseInt(Math.random() * items.length);
 
-    ctx
-      .replyWithVideo(items[randomizedIndex], {
-        reply_to_message_id: ctx.message.message_id
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if (type === "image") {
+      ctx
+        .replyWithPhoto(items[randomizedIndex], {
+          reply_to_message_id: ctx.message.message_id
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    if (type === "video") {
+      ctx
+        .replyWithVideo(items[randomizedIndex], {
+          reply_to_message_id: ctx.message.message_id
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   } catch (err) {
     console.log(err);
 

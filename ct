@@ -1,0 +1,178 @@
+[
+  {
+    "name": "u",
+    "value": "d7fa58630fde818a557fee6bdf90b29b",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1625239807.182915,
+    "size": 33,
+    "httpOnly": false,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "_twitter_sess",
+    "value": "BAh7CiIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%250ASGFzaHsABjoKQHVzZWR7ADoPY3JlYXRlZF9hdGwrCDai2WZvAToMY3NyZl9p%250AZCIlNWE2MDhiNDVhYTIwY2YyNGJkMzQzYjNiM2I1MGEwYjc6B2lkIiUzY2U4%250AMzNkOGJhN2VlYjcyYWY0ODhkZjMyMGY0ZjdmMjoJdXNlcmwrCQAw1S%252BRIn0L--67d4247f0cbdcaacb360335a3fdedc6dd6fc1042",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": -1,
+    "size": 314,
+    "httpOnly": true,
+    "secure": true,
+    "session": true
+  },
+  {
+    "name": "kdt",
+    "value": "RhgujoBOAA5TuRimaCGh3UgbE7xKKr4jAeOtoVXb",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1625239807.182749,
+    "size": 43,
+    "httpOnly": true,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "personalization_id",
+    "value": "\"v1_LsCtY7WYtI0aLwFX7AStaA==\"",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1641050518.830679,
+    "size": 47,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "dnt",
+    "value": "1",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1735659007.182555,
+    "size": 4,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "_sl",
+    "value": "1",
+    "domain": "mobile.twitter.com",
+    "path": "/",
+    "expires": 1578065399,
+    "size": 4,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "_gat",
+    "value": "1",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1577979060,
+    "size": 5,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "twid",
+    "value": "u%3D827855913474142208",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1735659007.742902,
+    "size": 26,
+    "httpOnly": false,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "gt",
+    "value": "1212755923573174272",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1577989318.961212,
+    "size": 21,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "auth_token",
+    "value": "cd1d9645ab8c4ee252336a147bb8b201d76c47ec",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1735659007.18299,
+    "size": 50,
+    "httpOnly": true,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "ct0",
+    "value": "0fc6da1997dda39b358789d64dcea880",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1578000133.03963,
+    "size": 35,
+    "httpOnly": false,
+    "secure": true,
+    "session": false
+  },
+  {
+    "name": "remember_checked_on",
+    "value": "1",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1735659007.18279,
+    "size": 20,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "ads_prefs",
+    "value": "\"HBESAAA=\"",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1735659007.18271,
+    "size": 19,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "guest_id",
+    "value": "v1%3A157797851874168951",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1641050518.830755,
+    "size": 31,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "_ga",
+    "value": "GA1.2.30152351.1577978722",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1641051000,
+    "size": 28,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  },
+  {
+    "name": "_gid",
+    "value": "GA1.2.1758716778.1577978722",
+    "domain": ".twitter.com",
+    "path": "/",
+    "expires": 1578065400,
+    "size": 31,
+    "httpOnly": false,
+    "secure": false,
+    "session": false
+  }
+]

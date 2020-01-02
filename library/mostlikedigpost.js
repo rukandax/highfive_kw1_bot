@@ -41,9 +41,7 @@ async function getMostLikedIgPost(ctx) {
     });
 
     const page = await browser.newPage();
-    await page.goto(`https://analisa.io/profile/${username}`, {
-      timeout: 3000000
-    });
+    await page.goto(`https://analisa.io/profile/${username}`);
 
     await page.waitForFunction(
       'document.querySelector(".post-01 .card-img-top") && document.querySelector(".post-01 .card-img-top").getAttribute("src")'
