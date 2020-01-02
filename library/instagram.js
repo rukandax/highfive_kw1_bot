@@ -45,12 +45,12 @@ const findInstagram = async ctx => {
     });
 
   const links = await axios
-    .get(`https://insta-stalkerr.com/search/?q=${name}`)
+    .get(`https://picsoci.com/s/${name}`)
     .then(({ data }) => {
       const users = [];
 
       const $ = cheerio.load(data);
-      const usersEl = $(".row:nth-child(3) .col-md-3 a");
+      const usersEl = $(".profile-info a");
 
       usersEl.each((_, el) => {
         const username = $(el)
