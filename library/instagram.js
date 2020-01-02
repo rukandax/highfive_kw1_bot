@@ -50,7 +50,7 @@ const findInstagram = async ctx => {
       const users = [];
 
       const $ = cheerio.load(data);
-      const usersEl = $(".profile-info a");
+      const usersEl = $(".profile-info .name a");
 
       usersEl.each((_, el) => {
         const username = $(el)
