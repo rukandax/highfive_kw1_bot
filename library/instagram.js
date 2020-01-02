@@ -55,7 +55,7 @@ const findInstagram = async ctx => {
       usersEl.each((_, el) => {
         const username = $(el)
           .attr("href")
-          .replace("https://insta-stalkerr.com/profile/", "");
+          .replace("https://picsoci.com/u/", "");
         users.push(username);
       });
 
