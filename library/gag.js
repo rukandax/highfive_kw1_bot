@@ -1,7 +1,10 @@
 const { union } = require("lodash");
 
 const fs = require("fs").promises;
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+
+puppeteer.use(StealthPlugin());
 
 async function kpop(ctx) {
   let type;
@@ -58,6 +61,10 @@ async function kpop(ctx) {
     await page.setCookie(...cookies);
 
     await page.goto("https://9gag.com/kpop");
+
+    await page.waitForNavigation({
+      waitUntil: "networkidle0"
+    });
 
     cookies = await page.cookies();
     await fs.writeFile("./cg", JSON.stringify(cookies, null, 2));
@@ -203,6 +210,10 @@ async function nsfw(ctx) {
     await page.setCookie(...cookies);
 
     await page.goto("https://9gag.com/nsfw");
+
+    await page.waitForNavigation({
+      waitUntil: "networkidle0"
+    });
 
     const isLogin = await page.evaluate(() => {
       const userFunction = document.querySelector("#jsid-user-function");
