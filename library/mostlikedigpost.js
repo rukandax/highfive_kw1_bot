@@ -41,10 +41,9 @@ async function getMostLikedIgPost(ctx) {
     });
 
     const page = await browser.newPage();
-    await page.goto(`https://analisa.io/profile/${username}`);
-
-    await page.waitForNavigation({
-      waitUntil: "networkidle0"
+    await page.goto(`https://analisa.io/profile/${username}`, {
+      waitLoad: true,
+      waitNetworkIdle: true
     });
 
     await page.waitForFunction(

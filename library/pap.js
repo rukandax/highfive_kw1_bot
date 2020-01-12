@@ -51,7 +51,10 @@ async function pap(ctx) {
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
 
-    await page.goto("https://mobile.twitter.com/MIRRORSELFIEid");
+    await page.goto("https://mobile.twitter.com/MIRRORSELFIEid", {
+      waitLoad: true,
+      waitNetworkIdle: true
+    });
 
     await page.waitForFunction(
       "document.querySelector('body').innerHTML.includes('PAP atau kita putus!')"
@@ -97,7 +100,10 @@ async function pap(ctx) {
       await fs.writeFile("./ct", JSON.stringify(cookies, null, 2));
     }
 
-    await page.goto("https://mobile.twitter.com/MIRRORSELFIEid/media");
+    await page.goto("https://mobile.twitter.com/MIRRORSELFIEid/media", {
+      waitLoad: true,
+      waitNetworkIdle: true
+    });
 
     await page.waitForSelector("img[alt=Image]");
 

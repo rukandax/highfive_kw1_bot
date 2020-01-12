@@ -60,10 +60,9 @@ async function kpop(ctx) {
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
 
-    await page.goto("https://9gag.com/kpop");
-
-    await page.waitForNavigation({
-      waitUntil: "networkidle0"
+    await page.goto("https://9gag.com/kpop", {
+      waitLoad: true,
+      waitNetworkIdle: true
     });
 
     cookies = await page.cookies();
@@ -209,10 +208,9 @@ async function nsfw(ctx) {
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
 
-    await page.goto("https://9gag.com/nsfw");
-
-    await page.waitForNavigation({
-      waitUntil: "networkidle0"
+    await page.goto("https://9gag.com/nsfw", {
+      waitLoad: true,
+      waitNetworkIdle: true
     });
 
     const isLogin = await page.evaluate(() => {
