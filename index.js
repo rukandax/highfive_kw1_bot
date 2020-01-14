@@ -50,11 +50,37 @@ Schedule.scheduleJob("endCoreHour", "0 17 * * 1-5", () => {
 
 bot.start(greeting);
 bot.command("help", greeting);
-bot.command("instagram", findInstagram);
-bot.command("mostlikedigpost", getMostLikedIgPost);
-bot.command("kpop", kpop);
-bot.command("nsfw", nsfw);
-bot.command("paptt", pap);
+
+bot.command("instagram", ctx => {
+  setTimeout(function() {
+    findInstagram(ctx);
+  }, 100);
+});
+
+bot.command("mostlikedigpost", ctx => {
+  setTimeout(function() {
+    getMostLikedIgPost(ctx);
+  }, 100);
+});
+
+bot.command("kpop", ctx => {
+  setTimeout(function() {
+    kpop(ctx);
+  }, 100);
+});
+
+bot.command("nsfw", ctx => {
+  setTimeout(function() {
+    nsfw(ctx);
+  }, 100);
+});
+
+bot.command("paptt", ctx => {
+  setTimeout(function() {
+    pap(ctx);
+  }, 100);
+});
+
 bot.command("shout", shout);
 
 bot.command("deleteshout", async ctx => {
