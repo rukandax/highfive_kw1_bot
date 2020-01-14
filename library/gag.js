@@ -66,7 +66,7 @@ async function kpop(ctx) {
     let previousHeight;
     let items = [];
 
-    while (items.length < 15) {
+    while (items.length < 25) {
       if (type === "image") {
         const collected = await page.evaluate(() => {
           const image = [];
@@ -229,7 +229,7 @@ async function nsfw(ctx) {
     let previousHeight;
     let items = [];
 
-    while (items.length < 15) {
+    while (items.length < 25) {
       if (type === "image") {
         const collected = await page.evaluate(() => {
           const image = [];
