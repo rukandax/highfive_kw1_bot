@@ -56,30 +56,21 @@ async function kpop(ctx) {
       }
     });
 
-    let cookiesString = await fs.readFile("./cg");
-    let cookies = JSON.parse(cookiesString);
-    await page.setCookie(...cookies);
-
-    await page.goto("https://9gag.com/kpop", {
+    await page.goto("https://m.9gag.com/kpop", {
       waitLoad: true,
       waitNetworkIdle: true
     });
 
-    cookies = await page.cookies();
-    await fs.writeFile("./cg", JSON.stringify(cookies, null, 2));
-
-    await page.waitForSelector(".list-stream");
+    await page.waitForSelector(".post-content");
 
     let previousHeight;
     let items = [];
 
-    while (items.length < 25) {
+    while (items.length < 15) {
       if (type === "image") {
         const collected = await page.evaluate(() => {
           const image = [];
-          const imageElements = document.querySelectorAll(
-            ".list-stream .post-container img"
-          );
+          const imageElements = document.querySelectorAll(".post-content img");
 
           imageElements.forEach(imageElement => {
             image.push(imageElement.getAttribute("src"));
@@ -95,7 +86,7 @@ async function kpop(ctx) {
         const collected = await page.evaluate(() => {
           const video = [];
           const imageElements = document.querySelectorAll(
-            ".list-stream .post-container video source:nth-child(2)"
+            ".post-content video source:nth-child(2)"
           );
 
           imageElements.forEach(imageElement => {
@@ -238,7 +229,7 @@ async function nsfw(ctx) {
     let previousHeight;
     let items = [];
 
-    while (items.length < 25) {
+    while (items.length < 15) {
       if (type === "image") {
         const collected = await page.evaluate(() => {
           const image = [];
