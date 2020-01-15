@@ -69,7 +69,9 @@ async function kpop(ctx) {
 
   if (contentType === "Photo") {
     ctx
-      .replyWithPhoto(items[randomizedIndex].images.image700.url)
+      .replyWithPhoto(items[randomizedIndex].images.image700.url, {
+        caption: items[randomizedIndex].title
+      })
       .catch(err => {
         console.log(err);
       });
@@ -77,7 +79,9 @@ async function kpop(ctx) {
 
   if (contentType === "Animated") {
     ctx
-      .replyWithVideo(items[randomizedIndex].images.image460sv.url)
+      .replyWithVideo(items[randomizedIndex].images.image460sv.url, {
+        caption: items[randomizedIndex].title
+      })
       .catch(err => {
         console.log(err);
       });
