@@ -42,10 +42,12 @@ async function pap(ctx) {
         [
           "image",
           "media",
-          "stylesheet",
           "font",
+          "texttrack",
+          "eventsource",
           "websocket",
-          "manifest"
+          "manifest",
+          "other"
         ].indexOf(request.resourceType()) !== -1
       ) {
         request.abort();
