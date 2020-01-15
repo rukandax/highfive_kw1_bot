@@ -58,7 +58,6 @@ async function pap(ctx) {
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
 
-    await page.setDefaultNavigationTimeout(0);
     await page.goto("https://mobile.twitter.com/MIRRORSELFIEid");
 
     await page.waitForFunction(
@@ -105,7 +104,6 @@ async function pap(ctx) {
       await fs.writeFile("./ct", JSON.stringify(cookies, null, 2));
     }
 
-    await page.setDefaultNavigationTimeout(0);
     await page.goto("https://mobile.twitter.com/MIRRORSELFIEid/media");
 
     await page.waitForSelector("img[alt=Image]");

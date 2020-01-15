@@ -63,7 +63,6 @@ async function kpop(ctx) {
       }
     });
 
-    await page.setDefaultNavigationTimeout(0);
     await page.goto("https://m.9gag.com/kpop");
 
     await page.waitForSelector(".post-content");
@@ -205,7 +204,6 @@ async function nsfw(ctx) {
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
 
-    await page.setDefaultNavigationTimeout(0);
     await page.goto("https://9gag.com/nsfw");
 
     const isLogin = await page.evaluate(() => {
