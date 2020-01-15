@@ -4,7 +4,24 @@ const { PendingXHR } = require("pending-xhr-puppeteer");
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer");
 
+let instanceRunning = false;
+
 async function nsfw(ctx) {
+  if (instanceRunning) {
+    return ctx
+      .replyWithHTML(
+        "Masih ada proses lain yang belum selesai, coba lagi nanti..",
+        {
+          reply_to_message_id: ctx.message.message_id
+        }
+      )
+      .catch(err => {
+        console.log(err);
+      });
+  } else {
+    instanceRunning = true;
+  }
+
   let type;
 
   if (ctx.message.text.includes("/nsfw@highfive_kw1_bot")) {
@@ -18,12 +35,9 @@ async function nsfw(ctx) {
   }
 
   ctx
-    .replyWithHTML(
-      "Sebentar ya bos.. Bisa <code>/nsfw video</code> atau <code>/nsfw image</code>",
-      {
-        reply_to_message_id: ctx.message.message_id
-      }
-    )
+    .replyWithHTML("Sebentar ya bos.. Bisa juga <code>/nsfw video</code>", {
+      reply_to_message_id: ctx.message.message_id
+    })
     .catch(err => {
       console.log(err);
     });
@@ -150,6 +164,21 @@ async function nsfw(ctx) {
 }
 
 async function kpop(ctx) {
+  if (instanceRunning) {
+    return ctx
+      .replyWithHTML(
+        "Masih ada proses lain yang belum selesai, coba lagi nanti..",
+        {
+          reply_to_message_id: ctx.message.message_id
+        }
+      )
+      .catch(err => {
+        console.log(err);
+      });
+  } else {
+    instanceRunning = true;
+  }
+
   let type;
 
   if (ctx.message.text.includes("/kpop@highfive_kw1_bot")) {
@@ -163,12 +192,9 @@ async function kpop(ctx) {
   }
 
   ctx
-    .replyWithHTML(
-      "Sebentar ya bos.. Bisa <code>/kpop video</code> atau <code>/kpop image</code>",
-      {
-        reply_to_message_id: ctx.message.message_id
-      }
-    )
+    .replyWithHTML("Sebentar ya bos.. Bisa juga <code>/kpop video</code>", {
+      reply_to_message_id: ctx.message.message_id
+    })
     .catch(err => {
       console.log(err);
     });
