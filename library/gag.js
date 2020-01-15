@@ -101,12 +101,7 @@ async function kpop(ctx) {
         items = union(items, collected);
       }
 
-      previousHeight = await page.evaluate("document.body.scrollHeight");
-
       await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
-      await page.waitForFunction(
-        `document.body.scrollHeight > ${previousHeight}`
-      );
     }
 
     await browser.close();
@@ -266,12 +261,7 @@ async function nsfw(ctx) {
         items = union(items, collected);
       }
 
-      previousHeight = await page.evaluate("document.body.scrollHeight");
-
       await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
-      await page.waitForFunction(
-        `document.body.scrollHeight > ${previousHeight}`
-      );
     }
 
     await browser.close();
