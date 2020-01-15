@@ -34,19 +34,6 @@ async function pap(ctx) {
       height: 1024
     });
 
-    await page.setRequestInterception(true);
-    page.on("request", request => {
-      if (
-        ["image", "video", "stylesheet", "font"].indexOf(
-          request.resourceType()
-        ) !== -1
-      ) {
-        request.abort();
-      } else {
-        request.continue();
-      }
-    });
-
     let cookiesString = await fs.readFile("./ct");
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
@@ -107,7 +94,6 @@ async function pap(ctx) {
 
     await page.waitForSelector("img[alt=Image]");
 
-    let previousHeight;
     let items = [];
 
     while (items.length < 50) {
@@ -138,12 +124,7 @@ async function pap(ctx) {
 
       items = union(items, collected);
 
-      previousHeight = await page.evaluate("document.body.scrollHeight");
-
       await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
-      await page.waitForFunction(
-        `document.body.scrollHeight > ${previousHeight}`
-      );
     }
 
     await browser.close();

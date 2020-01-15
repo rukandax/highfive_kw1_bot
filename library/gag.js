@@ -33,7 +33,7 @@ async function kpop(ctx) {
   try {
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      headless: true
+      headless: false
     });
 
     const page = await browser.newPage();
@@ -43,19 +43,6 @@ async function kpop(ctx) {
       height: 1024
     });
 
-    await page.setRequestInterception(true);
-    page.on("request", request => {
-      if (
-        ["image", "video", "stylesheet", "font"].indexOf(
-          request.resourceType()
-        ) !== -1
-      ) {
-        request.abort();
-      } else {
-        request.continue();
-      }
-    });
-
     await page.goto("https://m.9gag.com/kpop", {
       waitLoad: true,
       waitNetworkIdle: true
@@ -63,7 +50,6 @@ async function kpop(ctx) {
 
     await page.waitForSelector(".post-content");
 
-    let previousHeight;
     let items = [];
 
     while (items.length < 25) {
@@ -177,19 +163,6 @@ async function nsfw(ctx) {
       height: 1024
     });
 
-    await page.setRequestInterception(true);
-    page.on("request", request => {
-      if (
-        ["image", "video", "stylesheet", "font"].indexOf(
-          request.resourceType()
-        ) !== -1
-      ) {
-        request.abort();
-      } else {
-        request.continue();
-      }
-    });
-
     let cookiesString = await fs.readFile("./cg");
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
@@ -221,7 +194,6 @@ async function nsfw(ctx) {
     cookies = await page.cookies();
     await fs.writeFile("./cg", JSON.stringify(cookies, null, 2));
 
-    let previousHeight;
     let items = [];
 
     while (items.length < 25) {
