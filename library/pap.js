@@ -144,7 +144,22 @@ async function pap(ctx) {
 
     await browser.close();
 
-    const randomizedIndex = parseInt(Math.random() * items.length);
+    let lastItemPersist = await fs.readFile("./tw");
+    let lastItem = JSON.parse(lastItemPersist);
+
+    let randomizedIndex = parseInt(Math.random() * items.length);
+
+    while (lastItem.includes(JSON.stringify(items[randomizedIndex]))) {
+      randomizedIndex = parseInt(Math.random() * items.length);
+    }
+
+    lastItem.push(JSON.stringify(items[randomizedIndex]));
+
+    if (lastItem.length >= 49) {
+      lastItem.shift();
+    }
+
+    await fs.writeFile("./tw", JSON.stringify(lastItem, null, 2));
 
     items[randomizedIndex].forEach(item => {
       ctx.replyWithPhoto(item).catch(err => {
