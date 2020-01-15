@@ -1,4 +1,5 @@
 const { union } = require("lodash");
+const { PendingXHR } = require("pending-xhr-puppeteer");
 
 const fs = require("fs").promises;
 const puppeteer = require("puppeteer-extra");
@@ -37,10 +38,11 @@ async function kpop(ctx) {
     });
 
     const page = await browser.newPage();
+    const pendingXHR = new PendingXHR(page);
 
     await page.setViewport({
-      width: 1024,
-      height: 1024
+      width: 1080,
+      height: 2280
     });
 
     await page.goto("https://m.9gag.com/kpop", {
@@ -88,6 +90,7 @@ async function kpop(ctx) {
       }
 
       await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
+      await pendingXHR.waitForAllXhrFinished();
     }
 
     await browser.close();
@@ -157,10 +160,11 @@ async function nsfw(ctx) {
     });
 
     const page = await browser.newPage();
+    const pendingXHR = new PendingXHR(page);
 
     await page.setViewport({
-      width: 1024,
-      height: 1024
+      width: 1080,
+      height: 2280
     });
 
     let cookiesString = await fs.readFile("./cg");
@@ -234,6 +238,7 @@ async function nsfw(ctx) {
       }
 
       await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
+      await pendingXHR.waitForAllXhrFinished();
     }
 
     await browser.close();
