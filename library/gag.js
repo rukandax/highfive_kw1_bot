@@ -55,11 +55,11 @@ async function kpop(ctx) {
 
   randomizedIndex = parseInt(Math.random() * items.length);
 
-  while (lastItem.includes(JSON.stringify(items[randomizedIndex]))) {
+  while (lastItem.includes(items[randomizedIndex].id)) {
     randomizedIndex = parseInt(Math.random() * items.length);
   }
 
-  lastItem.push(JSON.stringify(items[randomizedIndex]));
+  lastItem.push(items[randomizedIndex].id);
 
   if (lastItem.length >= 49) {
     lastItem.shift();
@@ -140,11 +140,11 @@ async function nsfw(ctx) {
 
   randomizedIndex = parseInt(Math.random() * items.length);
 
-  while (lastItem.includes(JSON.stringify(items[randomizedIndex]))) {
+  while (lastItem.includes(items[randomizedIndex].id)) {
     randomizedIndex = parseInt(Math.random() * items.length);
   }
 
-  lastItem.push(JSON.stringify(items[randomizedIndex]));
+  lastItem.push(items[randomizedIndex].id);
 
   if (lastItem.length >= 49) {
     lastItem.shift();
