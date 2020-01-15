@@ -52,33 +52,23 @@ bot.start(greeting);
 bot.command("help", greeting);
 
 bot.command("instagram", ctx => {
-  setTimeout(function() {
-    findInstagram(ctx);
-  }, 100);
+  findInstagram(ctx);
 });
 
 bot.command("mostlikedigpost", ctx => {
-  setTimeout(function() {
-    getMostLikedIgPost(ctx);
-  }, 100);
+  getMostLikedIgPost(ctx);
 });
 
 bot.command("kpop", ctx => {
-  setTimeout(function() {
-    kpop(ctx);
-  }, 100);
+  kpop(ctx);
 });
 
 bot.command("nsfw", ctx => {
-  setTimeout(function() {
-    nsfw(ctx);
-  }, 100);
+  nsfw(ctx);
 });
 
 bot.command("paptt", ctx => {
-  setTimeout(function() {
-    pap(ctx);
-  }, 100);
+  pap(ctx);
 });
 
 bot.command("shout", shout);
