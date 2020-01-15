@@ -36,6 +36,24 @@ async function pap(ctx) {
       height: 2280
     });
 
+    await page.setRequestInterception(true);
+    page.on("request", request => {
+      if (
+        [
+          "image",
+          "media",
+          "stylesheet",
+          "font",
+          "websocket",
+          "manifest"
+        ].indexOf(request.resourceType()) !== -1
+      ) {
+        request.abort();
+      } else {
+        request.continue();
+      }
+    });
+
     let cookiesString = await fs.readFile("./ct");
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
