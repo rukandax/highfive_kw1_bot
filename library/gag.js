@@ -42,24 +42,6 @@ async function nsfw(ctx) {
       height: 2280
     });
 
-    await page.setRequestInterception(true);
-    page.on("request", request => {
-      if (
-        [
-          "image",
-          "media",
-          "stylesheet",
-          "font",
-          "websocket",
-          "manifest"
-        ].indexOf(request.resourceType()) !== -1
-      ) {
-        request.abort();
-      } else {
-        request.continue();
-      }
-    });
-
     let cookiesString = await fs.readFile("./cg");
     let cookies = JSON.parse(cookiesString);
     await page.setCookie(...cookies);
@@ -203,24 +185,6 @@ async function kpop(ctx) {
     await page.setViewport({
       width: 1080,
       height: 2280
-    });
-
-    await page.setRequestInterception(true);
-    page.on("request", request => {
-      if (
-        [
-          "image",
-          "media",
-          "stylesheet",
-          "font",
-          "websocket",
-          "manifest"
-        ].indexOf(request.resourceType()) !== -1
-      ) {
-        request.abort();
-      } else {
-        request.continue();
-      }
     });
 
     let cookiesString = await fs.readFile("./cg");
