@@ -160,6 +160,8 @@ async function nsfw(ctx) {
       .catch(err => {
         console.log(err);
       });
+  } finally {
+    instanceRunning = false;
   }
 }
 
@@ -317,6 +319,8 @@ async function kpop(ctx) {
       .catch(err => {
         console.log(err);
       });
+  } finally {
+    instanceRunning = false;
   }
 }
 
