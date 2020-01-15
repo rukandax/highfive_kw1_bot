@@ -41,6 +41,8 @@ async function getMostLikedIgPost(ctx) {
     });
 
     const page = await browser.newPage();
+
+    await page.setDefaultNavigationTimeout(0);
     await page.goto(`https://analisa.io/profile/${username}`);
 
     await page.waitForFunction(
