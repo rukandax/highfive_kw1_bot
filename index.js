@@ -25,14 +25,22 @@ Schedule.scheduleJob("payday", "0 11 * * 1-5", () => {
   const payday = new Date();
   payday.setDate(27);
 
-  if (payday.getDay() == 0) {
+  if (payday.getDay() == 1) {
+    dayBeforePayday.setDate(payday.getDate() - 3);
+  } else if (payday.getDay() == 0) {
     dayBeforePayday.setDate(payday.getDate() - 3);
   } else if (payday.getDay() == 6) {
     dayBeforePayday.setDate(payday.getDate() - 2);
   }
 
   if (today.getDate() === dayBeforePayday.getDate()) {
-    const message = "📢 Besok gajian gaesss~~";
+    let message = "";
+
+    if (payday.getDay() == 1) {
+      message = "📢 Senin gajian gaesss~~";
+    } else {
+      message = "📢 Besok gajian gaesss~~";
+    }
 
     bot.telegram.sendMessage(process.env.TELEGRAM_GROUP, message).catch(err => {
       console.log(err);
